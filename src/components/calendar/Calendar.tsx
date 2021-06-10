@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { Key, useEffect, useState } from "react";
 import moment from "moment";
+import DayBox from "./DayBox";
+import { getDaysInMonth } from "./utils/getDaysInMonth";
 moment.locale("sv");
 
-const Calendar = () => {
+const Calendar: React.FC<{}> = () => {
   const [currentMonth, setCurrentMonth] = useState(moment(new Date()));
   const [days, setDays] = useState(
     getDaysInMonth(
@@ -11,7 +13,7 @@ const Calendar = () => {
     )
   );
 
-  let daysInWeek = [];
+  const daysInWeek: String[] = [];
 
   useEffect(() => {
     setDays(
@@ -32,83 +34,67 @@ const Calendar = () => {
     <div className="flex flex-col py-10">
       <div className="text-black flex justify-center relative mb-10">
         <button
-          onClick={() =>
-            setCurrentMonth(moment(currentMonth).subtract(1, "month"))
-          }
-          className="absolute mr-40 px-2 text-xl font-bold bg-gray-300 rounded-md text-gray-800"
+          onClick={() => {
+            if (!moment(currentMonth).isBefore()) {
+              setCurrentMonth(moment(currentMonth).subtract(1, "month"));
+            }
+          }}
+          className={`absolute mr-40 px-2 text-xl font-bold ${
+            !moment(currentMonth).isBefore()
+              ? "bg-gray-300 text-gray-500"
+              : "bg-gray-200 text-gray-400 cursor-default"
+          } rounded-md shadow outline-none focus:outline-none`}
         >
           {"<"}
         </button>
         <p className="mx-5 text-xl">{moment(currentMonth).format("MMMM")}</p>
         <button
-          onClick={() => setCurrentMonth(moment(currentMonth).add(1, "month"))}
-          className="absolute ml-40 px-2 text-xl font-bold bg-gray-300 rounded-md text-gray-800"
+          onClick={() => {
+            if (
+              parseInt(moment(currentMonth).format("MM")) -
+                parseInt(moment().format("MM")) <
+              3
+            ) {
+              setCurrentMonth(moment(currentMonth).add(1, "month"));
+            }
+          }}
+          className={`absolute ml-40 px-2 text-xl font-bold ${
+            parseInt(moment(currentMonth).format("MM")) -
+              parseInt(moment().format("MM")) <
+            3
+              ? "bg-gray-300 text-gray-500"
+              : "bg-gray-200 text-gray-400 cursor-default"
+          } rounded-md shadow outline-none focus:outline-none`}
         >
           {">"}
         </button>
       </div>
       <div className="flex mb-2">
-        {days.map((day, i): any => {
-          if (i < 7) {
-            return (
-              <div
-                style={{ width: "14.28%" }}
-                className="text-black text-lg flex justify-center"
-                key={i}
-              >
-                {moment(day).format("dddd")}
-              </div>
-            );
-          }
-        })}
+        {days.slice(0, 7).map((day: Date, i: Key) => (
+          <div key={i} className="w-full flex justify-center">
+            <div
+              style={{ width: "14.28%" }}
+              className="text-black text-lg hidden sm:flex justify-center"
+              key={i}
+            >
+              {moment(day).format("dddd")}
+            </div>
+            <div
+              style={{ width: "14.28%" }}
+              className="text-black text-lg flex sm:hidden justify-center"
+            >
+              {moment(day).format("dddd").slice(0, 3)}
+            </div>
+          </div>
+        ))}
       </div>
       <div className="w-full flex flex-row flex-wrap">
-        {days ? (
-          <>
-            {days.map((day, i) => {
-              console.log(day, moment(day).isBefore());
-              return (
-                <div
-                  key={i}
-                  style={{ width: "14.28%" }}
-                  className={`h-36 text-black p-1`}
-                >
-                  <div
-                    className={`${
-                      moment(day).add(1, "days").isBefore()
-                        ? "bg-gray-300"
-                        : "bg-white hover:shadow-md"
-                    } transition-all font-thin h-full py-2 rounded-lg flex justify-center text-lg`}
-                  >
-                    {moment(day).format("LL") === moment().format("LL")
-                      ? "Dagens datum"
-                      : moment(day).format("LL").split(" ")[0]}
-                  </div>
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <></>
-        )}
+        {days.map((day, i) => (
+          <DayBox key={i} day={day} />
+        ))}
       </div>
     </div>
   );
 };
-
-/**
- * @param {int} The month number, 0 based
- * @param {int} The year, not zero based, required to account for leap years
- * @return {Date[]} List with date objects for each day of the month
- */
-function getDaysInMonth(month: number, year: number) {
-  var date = new Date(year, month, 1);
-  var days = [];
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return days;
-}
 
 export default Calendar;

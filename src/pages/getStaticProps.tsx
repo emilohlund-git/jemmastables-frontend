@@ -1,6 +1,5 @@
 import Instagram from "instagram-web-api";
 
-
 export async function getStaticProps(context) {
   const client = new Instagram({
     username: process.env.IG_USERNAME,

@@ -2,7 +2,6 @@ import Link from "next/link";
 import DropDownMenu from "./DropDownMenu";
 
 const NavButton = (props: any) => {
-  console.log(props);
   return (
     <>
       {props.dropdown == true ? (
