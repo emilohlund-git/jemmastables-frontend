@@ -1,0 +1,5 @@
+query Horses {
+  horses {
+    ...RegularHorse
+  }
+}

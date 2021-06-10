@@ -1,0 +1,12 @@
+fragment RegularHorse on Horse {
+  id
+  name
+  nickname
+  owner
+  after
+  birthYear
+  gender
+  color
+  image
+  category
+}

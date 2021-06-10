@@ -1,0 +1,5 @@
+mutation CreateHorse($input: HorseInput!) {
+  createHorse(input: $input) {
+    ...RegularHorse
+  }
+}

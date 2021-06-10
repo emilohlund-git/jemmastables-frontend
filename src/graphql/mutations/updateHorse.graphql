@@ -1,0 +1,25 @@
+mutation updateHorse(
+  $id: Float!
+  $name: String!
+  $nickname: String!
+  $owner: String!
+  $after: String!
+  $birthYear: Float!
+  $gender: String!
+  $color: String!
+  $image: String!
+) {
+  updateHorse(
+    id: $id
+    name: $name
+    nickname: $nickname
+    owner: $owner
+    after: $after
+    birthYear: $birthYear
+    gender: $gender
+    color: $color
+    image: $image
+  ) {
+    ...RegularHorse
+  }
+}

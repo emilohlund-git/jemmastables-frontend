@@ -1,0 +1,5 @@
+query HorseByName($name: String!) {
+  horseByName(name: $name) {
+    ...RegularHorse
+  }
+}

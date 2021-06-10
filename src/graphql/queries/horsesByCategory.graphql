@@ -1,0 +1,5 @@
+query HorsesByCategory($category: String!) {
+  horsesByCategory(category: $category) {
+    ...RegularHorse
+  }
+}

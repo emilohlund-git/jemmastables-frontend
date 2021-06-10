@@ -1,0 +1,3 @@
+mutation DeleteHorse($id: Float!) {
+  deleteHorse(id: $id)
+}
