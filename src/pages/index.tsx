@@ -18,6 +18,7 @@ const index = () => {
         >
           <div className="flex justify-center h-52 items-center">
             <Image
+              loading="eager"
               src="/images/partners/horse_partner.png"
               className="filter grayscale invert"
               width={110}
@@ -27,6 +28,7 @@ const index = () => {
           </div>
           <div className="flex justify-center h-52 items-center">
             <Image
+              loading="eager"
               src="/images/partners/maskin_companiet.png"
               className="filter grayscale invert"
               width={220}
@@ -85,6 +87,7 @@ const index = () => {
             </div>
             <div className="md:flex lg:align-middle lg:justify-center relative">
               <Image
+                loading="eager"
                 src="/images/jemma_stables_drönarbild.png"
                 className="filter grayscale hover:filter-none transition-all"
                 width={1020}
@@ -95,10 +98,10 @@ const index = () => {
           </div>
         </div>
         {/*Other Page Content*/}
-        {/*<InstagramFeed instagramPosts={instagramPosts} />*/}
+        {/*<InstagramFeed />*/}
       </div>
     </Layout>
   );
 };
 
-export default withApollo()(index);
+export default withApollo({ ssr: true })(index);

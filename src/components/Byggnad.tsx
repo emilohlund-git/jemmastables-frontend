@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const Byggnad = (props) => {
+const Byggnad = (props : any) => {
   const [hover, setHover] = useState(true);
   const [loading, setLoading] = useState(true);
   return (
@@ -23,12 +23,11 @@ const Byggnad = (props) => {
             {props.label}
           </span>
           <Image
-            onLoad={() => setLoading(false)}
+            loading="eager"
             width={675}
             height={500}
             src={props.image}
           />
-          {loading ? <>Loading</> : <></>}
         </a>
       </Link>
     </div>

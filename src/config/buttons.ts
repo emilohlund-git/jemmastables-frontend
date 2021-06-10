@@ -21,7 +21,7 @@ const navButtons = [
   },
   {
     label: "Bokning av ridbana",
-    path: "/bokning-av-ridbana",
+    path: "/bokning",
   },
   {
     label: "Samarbetspartners",

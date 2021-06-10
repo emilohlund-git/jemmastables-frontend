@@ -16,6 +16,7 @@
     "graphql-tag": "^2.12.4",
     "instagram-web-api": "^2.2.2",
     "isomorphic-unfetch": "^3.1.0",
+    "moment": "^2.29.1",
     "next": "10.2.3",
     "next-apollo": "^5.0.4",
     "next-urql": "^3.1.0",
@@ -30,6 +31,7 @@
     "react-redux": "^7.2.4",
     "react-tiny-fab": "^4.0.3",
     "redux-devtools-extension": "^2.13.9",
+    "scheduler-calendar": "^3.1.0",
     "urql": "^2.0.3"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const Footer = (props) => {
+const Footer = () => {
   return (
     <>
       <div className="bg-black text-white px-10 sm:px-20 md:px-40 lg:flex lg:flex-col lg:px-60">
