@@ -1,5 +1,7 @@
 import Head from "next/head";
 import React from "react";
+import './_app.css'
+import 'antd/dist/antd.css'
 import "tailwindcss/tailwind.css";
 
 const MyApp = ({ Component, pageProps }: any) => {

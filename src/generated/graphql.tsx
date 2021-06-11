@@ -12,7 +12,28 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
+
+export type Appointment = {
+  __typename?: 'Appointment';
+  id: Scalars['Float'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  from: Scalars['String'];
+  to: Scalars['String'];
+  date: Scalars['String'];
+  booked: Scalars['Boolean'];
+};
+
+export type AppointmentInput = {
+  from: Scalars['String'];
+  to: Scalars['String'];
+  date: Scalars['DateTime'];
+  booked: Scalars['Boolean'];
+};
+
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -44,18 +65,35 @@ export type HorseInput = {
   birthYear: Scalars['Float'];
   gender: Scalars['String'];
   color: Scalars['String'];
-  image: Scalars['String'];
-  category: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAppointment: Appointment;
+  deleteAppointment: Scalars['Boolean'];
+  updateAppointment: Appointment;
   createHorse: Horse;
   updateHorse: Horse;
   deleteHorse: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+};
+
+
+export type MutationCreateAppointmentArgs = {
+  input: AppointmentInput;
+};
+
+
+export type MutationDeleteAppointmentArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationUpdateAppointmentArgs = {
+  booked: Scalars['Boolean'];
+  id: Scalars['Float'];
 };
 
 
@@ -94,6 +132,8 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  appointments: Array<Appointment>;
+  appointment?: Maybe<Appointment>;
   horses: Array<Horse>;
   horsesByCategory: Array<Horse>;
   horse?: Maybe<Horse>;
@@ -102,9 +142,8 @@ export type Query = {
 };
 
 
-export type QueryHorsesArgs = {
-  name?: Maybe<Scalars['String']>;
-  category?: Maybe<Scalars['String']>;
+export type QueryAppointmentArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -141,6 +180,11 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type RegularAppointmentFragment = (
+  { __typename?: 'Appointment' }
+  & Pick<Appointment, 'id' | 'from' | 'to' | 'date' | 'booked'>
+);
+
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
@@ -165,6 +209,19 @@ export type RegularUserResponseFragment = (
     { __typename?: 'User' }
     & RegularUserFragment
   )> }
+);
+
+export type CreateAppointmentMutationVariables = Exact<{
+  input: AppointmentInput;
+}>;
+
+
+export type CreateAppointmentMutation = (
+  { __typename?: 'Mutation' }
+  & { createAppointment: (
+    { __typename?: 'Appointment' }
+    & RegularAppointmentFragment
+  ) }
 );
 
 export type CreateHorseMutationVariables = Exact<{
@@ -224,6 +281,20 @@ export type RegisterMutation = (
   ) }
 );
 
+export type UpdateAppointmentMutationVariables = Exact<{
+  id: Scalars['Float'];
+  booked: Scalars['Boolean'];
+}>;
+
+
+export type UpdateAppointmentMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAppointment: (
+    { __typename?: 'Appointment' }
+    & RegularAppointmentFragment
+  ) }
+);
+
 export type UpdateHorseMutationVariables = Exact<{
   id: Scalars['Float'];
   name: Scalars['String'];
@@ -243,6 +314,30 @@ export type UpdateHorseMutation = (
     { __typename?: 'Horse' }
     & RegularHorseFragment
   ) }
+);
+
+export type AppointmentQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type AppointmentQuery = (
+  { __typename?: 'Query' }
+  & { appointment?: Maybe<(
+    { __typename?: 'Appointment' }
+    & RegularAppointmentFragment
+  )> }
+);
+
+export type AppointmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AppointmentsQuery = (
+  { __typename?: 'Query' }
+  & { appointments: Array<(
+    { __typename?: 'Appointment' }
+    & RegularAppointmentFragment
+  )> }
 );
 
 export type HorseQueryVariables = Exact<{
@@ -306,6 +401,15 @@ export type UserQuery = (
   )> }
 );
 
+export const RegularAppointmentFragmentDoc = gql`
+    fragment RegularAppointment on Appointment {
+  id
+  from
+  to
+  date
+  booked
+}
+    `;
 export const RegularHorseFragmentDoc = gql`
     fragment RegularHorse on Horse {
   id
@@ -343,6 +447,39 @@ export const RegularUserResponseFragmentDoc = gql`
 }
     ${RegularErrorFragmentDoc}
 ${RegularUserFragmentDoc}`;
+export const CreateAppointmentDocument = gql`
+    mutation CreateAppointment($input: AppointmentInput!) {
+  createAppointment(input: $input) {
+    ...RegularAppointment
+  }
+}
+    ${RegularAppointmentFragmentDoc}`;
+export type CreateAppointmentMutationFn = Apollo.MutationFunction<CreateAppointmentMutation, CreateAppointmentMutationVariables>;
+
+/**
+ * __useCreateAppointmentMutation__
+ *
+ * To run a mutation, you first call `useCreateAppointmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAppointmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAppointmentMutation, { data, loading, error }] = useCreateAppointmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateAppointmentMutation(baseOptions?: Apollo.MutationHookOptions<CreateAppointmentMutation, CreateAppointmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAppointmentMutation, CreateAppointmentMutationVariables>(CreateAppointmentDocument, options);
+      }
+export type CreateAppointmentMutationHookResult = ReturnType<typeof useCreateAppointmentMutation>;
+export type CreateAppointmentMutationResult = Apollo.MutationResult<CreateAppointmentMutation>;
+export type CreateAppointmentMutationOptions = Apollo.BaseMutationOptions<CreateAppointmentMutation, CreateAppointmentMutationVariables>;
 export const CreateHorseDocument = gql`
     mutation CreateHorse($input: HorseInput!) {
   createHorse(input: $input) {
@@ -503,6 +640,40 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateAppointmentDocument = gql`
+    mutation UpdateAppointment($id: Float!, $booked: Boolean!) {
+  updateAppointment(id: $id, booked: $booked) {
+    ...RegularAppointment
+  }
+}
+    ${RegularAppointmentFragmentDoc}`;
+export type UpdateAppointmentMutationFn = Apollo.MutationFunction<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>;
+
+/**
+ * __useUpdateAppointmentMutation__
+ *
+ * To run a mutation, you first call `useUpdateAppointmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAppointmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAppointmentMutation, { data, loading, error }] = useUpdateAppointmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      booked: // value for 'booked'
+ *   },
+ * });
+ */
+export function useUpdateAppointmentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>(UpdateAppointmentDocument, options);
+      }
+export type UpdateAppointmentMutationHookResult = ReturnType<typeof useUpdateAppointmentMutation>;
+export type UpdateAppointmentMutationResult = Apollo.MutationResult<UpdateAppointmentMutation>;
+export type UpdateAppointmentMutationOptions = Apollo.BaseMutationOptions<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>;
 export const UpdateHorseDocument = gql`
     mutation updateHorse($id: Float!, $name: String!, $nickname: String!, $owner: String!, $after: String!, $birthYear: Float!, $gender: String!, $color: String!, $image: String!) {
   updateHorse(
@@ -554,6 +725,75 @@ export function useUpdateHorseMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateHorseMutationHookResult = ReturnType<typeof useUpdateHorseMutation>;
 export type UpdateHorseMutationResult = Apollo.MutationResult<UpdateHorseMutation>;
 export type UpdateHorseMutationOptions = Apollo.BaseMutationOptions<UpdateHorseMutation, UpdateHorseMutationVariables>;
+export const AppointmentDocument = gql`
+    query Appointment($id: Float!) {
+  appointment(id: $id) {
+    ...RegularAppointment
+  }
+}
+    ${RegularAppointmentFragmentDoc}`;
+
+/**
+ * __useAppointmentQuery__
+ *
+ * To run a query within a React component, call `useAppointmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppointmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppointmentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAppointmentQuery(baseOptions: Apollo.QueryHookOptions<AppointmentQuery, AppointmentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AppointmentQuery, AppointmentQueryVariables>(AppointmentDocument, options);
+      }
+export function useAppointmentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AppointmentQuery, AppointmentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AppointmentQuery, AppointmentQueryVariables>(AppointmentDocument, options);
+        }
+export type AppointmentQueryHookResult = ReturnType<typeof useAppointmentQuery>;
+export type AppointmentLazyQueryHookResult = ReturnType<typeof useAppointmentLazyQuery>;
+export type AppointmentQueryResult = Apollo.QueryResult<AppointmentQuery, AppointmentQueryVariables>;
+export const AppointmentsDocument = gql`
+    query Appointments {
+  appointments {
+    ...RegularAppointment
+  }
+}
+    ${RegularAppointmentFragmentDoc}`;
+
+/**
+ * __useAppointmentsQuery__
+ *
+ * To run a query within a React component, call `useAppointmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppointmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppointmentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAppointmentsQuery(baseOptions?: Apollo.QueryHookOptions<AppointmentsQuery, AppointmentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AppointmentsQuery, AppointmentsQueryVariables>(AppointmentsDocument, options);
+      }
+export function useAppointmentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AppointmentsQuery, AppointmentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AppointmentsQuery, AppointmentsQueryVariables>(AppointmentsDocument, options);
+        }
+export type AppointmentsQueryHookResult = ReturnType<typeof useAppointmentsQuery>;
+export type AppointmentsLazyQueryHookResult = ReturnType<typeof useAppointmentsLazyQuery>;
+export type AppointmentsQueryResult = Apollo.QueryResult<AppointmentsQuery, AppointmentsQueryVariables>;
 export const HorseDocument = gql`
     query Horse($id: Float!) {
   horse(id: $id) {

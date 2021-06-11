@@ -62,7 +62,7 @@ const NavBar = () => {
           minimized ? "h-10" : "h-20"
         } w-40 ml-10 z-40`}
       >
-        <Image
+        <img
           src="/images/jemma_stables.png"
           className="transition-all filter grayscale invert"
           width={minimized ? 100 : 400}

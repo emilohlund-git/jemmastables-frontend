@@ -8,7 +8,7 @@ const Horse = ({ h }: any) => {
     <div
       onMouseEnter={() => setHover(false)}
       onMouseLeave={() => setHover(true)}
-      className="flex flex-row relative px-1 cursor-pointer"
+      className="flex flex-row relative px-1 cursor-pointer justify-center mb-2"
       key={h.id}
     >
       <Link
@@ -18,12 +18,11 @@ const Horse = ({ h }: any) => {
         }}
       >
         <div
-          className="w-1/3"
           style={{
             backgroundImage: `url(${h.image})`,
             backgroundSize: "cover",
             height: "500px",
-            width: "345px",
+            width: "400px",
           }}
         >
           <span

@@ -1,0 +1,5 @@
+mutation CreateAppointment($input: AppointmentInput!) {
+  createAppointment(input: $input) {
+    ...RegularAppointment
+  }
+}

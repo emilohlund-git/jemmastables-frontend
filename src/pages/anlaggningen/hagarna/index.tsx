@@ -20,7 +20,7 @@ const index = () => {
     <Layout>
       <div className="flex flex-col mt-32 relative text-white w-full">
         <div className="flex flex-col mx-auto justify-center">
-          <h1 className="text-4xl uppercase">Hagarna</h1>
+          <h1 className="text-4xl uppercase text-white">Hagarna</h1>
           <hr className="bg-white my-5 w-full" />
         </div>
         <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60">

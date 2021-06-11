@@ -31,7 +31,7 @@ const DropDownMenu = ({ props }: any) => {
           isActive ? "visible opacity-100" : "invisible opacity-0"
         }`}
       >
-        <ul className="list-none ml-8 bg-black w-full p-1">
+        <ul className="list-none ml-8 bg-black w-full py-3 px-4 rounded-md">
           {props.route == "anläggningen" ? (
             <>
               <li>

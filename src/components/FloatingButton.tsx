@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaEdit, FaPlus } from "react-icons/fa";
@@ -7,10 +8,8 @@ import {
   useDeleteHorseMutation,
   useHorseByNameQuery,
 } from "../generated/graphql";
-import { useApolloClient } from "@apollo/client";
-import { withApollo } from "../utils/withApollo";
 
-const FloatingButton = () => {
+const FloatingButton = ({ setEdit, showModal, setShowModal }: any) => {
   const apolloClient = useApolloClient();
   const router = useRouter();
   const { name } = router.query;
@@ -47,6 +46,7 @@ const FloatingButton = () => {
           <Action
             style={{ background: "#228B22", outline: "none" }}
             text={`Ändra ${name}`}
+            onClick={() => setEdit(true)}
           >
             <FaEdit className="text-white" />
           </Action>
@@ -59,7 +59,38 @@ const FloatingButton = () => {
           </Action>
         </Fab>
       ) : (
-        <></>
+        <Fab
+          alwaysShowTitle={true}
+          icon={<FaPlus />}
+          mainButtonStyles={{
+            color: "black",
+            background: "white",
+            outline: "none",
+          }}
+          style={{ bottom: 24, right: 24 }}
+        >
+          {!showModal ? (
+            <Action
+              style={{ background: "#228B22", outline: "none" }}
+              text={`Lägg till häst`}
+              onClick={() => {
+                setShowModal(true);
+              }}
+            >
+              <FaEdit className="text-white" />
+            </Action>
+          ) : (
+            <Action
+              style={{ background: "#8b0000", outline: "none" }}
+              text={`Stäng ruta`}
+              onClick={() => {
+                setShowModal(false);
+              }}
+            >
+              <FaEdit className="text-white" />
+            </Action>
+          )}
+        </Fab>
       )}
     </>
   );

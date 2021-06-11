@@ -1,0 +1,7 @@
+fragment RegularAppointment on Appointment {
+  id
+  from
+  to
+  date
+  booked
+}

@@ -1,0 +1,5 @@
+query Appointment($id: Float!) {
+  appointment(id: $id) {
+    ...RegularAppointment
+  }
+}
