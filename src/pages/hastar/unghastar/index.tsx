@@ -57,7 +57,7 @@ const index = () => {
               })}
             </div>
           </div>
-          <div className="flex justify-center">{body}</div>
+          <div className="flex justify-center z-40">{body}</div>
         </div>
       )}
     </Layout>

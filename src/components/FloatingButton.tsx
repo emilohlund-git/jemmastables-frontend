@@ -41,7 +41,7 @@ const FloatingButton = ({ setEdit, showModal, setShowModal }: any) => {
             background: "white",
             outline: "none",
           }}
-          style={{ bottom: 24, right: 24 }}
+          style={{ bottom: 24, right: 24, zIndex: 1000 }}
         >
           <Action
             style={{ background: "#228B22", outline: "none" }}
@@ -67,7 +67,7 @@ const FloatingButton = ({ setEdit, showModal, setShowModal }: any) => {
             background: "white",
             outline: "none",
           }}
-          style={{ bottom: 24, right: 24 }}
+          style={{ bottom: 24, right: 24, zIndex: 1000 }}
         >
           {!showModal ? (
             <Action

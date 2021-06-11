@@ -27,11 +27,11 @@ const index = () => {
   return (
     <Layout>
       {horseLoading ? (
-        <div className="flex justify-center align-middle">
+        <div className="flex justify-center align-middle z-10">
           <Spinner />
         </div>
       ) : (
-        <div className="flex flex-col mt-32 relative text-white w-full z-0">
+        <div className="flex flex-col mt-32 relative text-white w-full z-10">
           <div className="flex flex-col mx-auto justify-center">
             <h1 className="text-4xl uppercase text-white">{category}</h1>
             <hr className="bg-white my-5 w-full" />
@@ -48,10 +48,14 @@ const index = () => {
             </div>
           </div>
           {!userLoading && userData?.user ? (
-            <>
-              <FloatingButton category={category} showModal={showModal} setShowModal={setShowModal} />
+            <div className="z-40">
+              <FloatingButton
+                category={category}
+                showModal={showModal}
+                setShowModal={setShowModal}
+              />
               {showModal ? <AddHorseForm setShowModal={setShowModal} /> : <></>}
-            </>
+            </div>
           ) : (
             <></>
           )}

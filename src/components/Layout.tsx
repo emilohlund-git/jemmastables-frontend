@@ -6,7 +6,6 @@ const Layout = (props: any) => {
     <>
       <NavBar />
       <div className="pt-10 z-10">{props.children}</div>
-      <Footer />
     </>
   );
 };
