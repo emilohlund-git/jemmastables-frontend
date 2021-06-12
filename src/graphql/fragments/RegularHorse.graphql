@@ -8,5 +8,6 @@ fragment RegularHorse on Horse {
   gender
   color
   image
+  images
   category
 }

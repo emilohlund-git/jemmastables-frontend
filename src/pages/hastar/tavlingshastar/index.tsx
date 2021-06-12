@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AddHorseForm from "../../../components/AddHorseForm";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import FloatingButton from "../../../components/FloatingButton";
+import FloatingButtonCategory from "../../../components/FloatingButtonCategory";
 import Horse from "../../../components/Horse";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
@@ -49,8 +49,8 @@ const index = () => {
           </div>
           {!userLoading && userData?.user ? (
             <div className="z-40">
-              <FloatingButton
-                category={category}
+              <FloatingButtonCategory
+                category={true}
                 showModal={showModal}
                 setShowModal={setShowModal}
               />
@@ -65,4 +65,4 @@ const index = () => {
   );
 };
 
-export default withApollo({ ssr: false })(index);
+export default withApollo({ ssr: true })(index);

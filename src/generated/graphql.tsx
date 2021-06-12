@@ -12,8 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
 };
 
 export type Appointment = {
@@ -30,10 +28,9 @@ export type Appointment = {
 export type AppointmentInput = {
   from: Scalars['String'];
   to: Scalars['String'];
-  date: Scalars['DateTime'];
+  date: Scalars['String'];
   booked: Scalars['Boolean'];
 };
-
 
 export type FieldError = {
   __typename?: 'FieldError';
@@ -54,6 +51,7 @@ export type Horse = {
   gender: Scalars['String'];
   color: Scalars['String'];
   image: Scalars['String'];
+  images?: Maybe<Array<Scalars['String']>>;
   category: Scalars['String'];
 };
 
@@ -65,6 +63,21 @@ export type HorseInput = {
   birthYear: Scalars['Float'];
   gender: Scalars['String'];
   color: Scalars['String'];
+  image: Scalars['String'];
+  images?: Maybe<Array<Scalars['String']>>;
+  category: Scalars['String'];
+};
+
+export type HorseUpdate = {
+  name?: Maybe<Scalars['String']>;
+  nickname?: Maybe<Scalars['String']>;
+  owner?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  birthYear?: Maybe<Scalars['Float']>;
+  gender?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -73,7 +86,7 @@ export type Mutation = {
   deleteAppointment: Scalars['Boolean'];
   updateAppointment: Appointment;
   createHorse: Horse;
-  updateHorse: Horse;
+  updateHorse?: Maybe<Horse>;
   deleteHorse: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
@@ -103,16 +116,8 @@ export type MutationCreateHorseArgs = {
 
 
 export type MutationUpdateHorseArgs = {
-  name?: Maybe<Scalars['String']>;
-  nickname?: Maybe<Scalars['String']>;
-  owner?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  birthYear?: Maybe<Scalars['Float']>;
-  gender?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  category?: Maybe<Scalars['String']>;
-  id: Scalars['Float'];
+  input: HorseUpdate;
+  id: Scalars['Int'];
 };
 
 
@@ -192,7 +197,7 @@ export type RegularErrorFragment = (
 
 export type RegularHorseFragment = (
   { __typename?: 'Horse' }
-  & Pick<Horse, 'id' | 'name' | 'nickname' | 'owner' | 'after' | 'birthYear' | 'gender' | 'color' | 'image' | 'category'>
+  & Pick<Horse, 'id' | 'name' | 'nickname' | 'owner' | 'after' | 'birthYear' | 'gender' | 'color' | 'image' | 'images' | 'category'>
 );
 
 export type RegularUserFragment = (
@@ -296,24 +301,17 @@ export type UpdateAppointmentMutation = (
 );
 
 export type UpdateHorseMutationVariables = Exact<{
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  nickname: Scalars['String'];
-  owner: Scalars['String'];
-  after: Scalars['String'];
-  birthYear: Scalars['Float'];
-  gender: Scalars['String'];
-  color: Scalars['String'];
-  image: Scalars['String'];
+  id: Scalars['Int'];
+  input: HorseUpdate;
 }>;
 
 
 export type UpdateHorseMutation = (
   { __typename?: 'Mutation' }
-  & { updateHorse: (
+  & { updateHorse?: Maybe<(
     { __typename?: 'Horse' }
     & RegularHorseFragment
-  ) }
+  )> }
 );
 
 export type AppointmentQueryVariables = Exact<{
@@ -421,6 +419,7 @@ export const RegularHorseFragmentDoc = gql`
   gender
   color
   image
+  images
   category
 }
     `;
@@ -675,18 +674,8 @@ export type UpdateAppointmentMutationHookResult = ReturnType<typeof useUpdateApp
 export type UpdateAppointmentMutationResult = Apollo.MutationResult<UpdateAppointmentMutation>;
 export type UpdateAppointmentMutationOptions = Apollo.BaseMutationOptions<UpdateAppointmentMutation, UpdateAppointmentMutationVariables>;
 export const UpdateHorseDocument = gql`
-    mutation updateHorse($id: Float!, $name: String!, $nickname: String!, $owner: String!, $after: String!, $birthYear: Float!, $gender: String!, $color: String!, $image: String!) {
-  updateHorse(
-    id: $id
-    name: $name
-    nickname: $nickname
-    owner: $owner
-    after: $after
-    birthYear: $birthYear
-    gender: $gender
-    color: $color
-    image: $image
-  ) {
+    mutation updateHorse($id: Int!, $input: HorseUpdate!) {
+  updateHorse(id: $id, input: $input) {
     ...RegularHorse
   }
 }
@@ -707,14 +696,7 @@ export type UpdateHorseMutationFn = Apollo.MutationFunction<UpdateHorseMutation,
  * const [updateHorseMutation, { data, loading, error }] = useUpdateHorseMutation({
  *   variables: {
  *      id: // value for 'id'
- *      name: // value for 'name'
- *      nickname: // value for 'nickname'
- *      owner: // value for 'owner'
- *      after: // value for 'after'
- *      birthYear: // value for 'birthYear'
- *      gender: // value for 'gender'
- *      color: // value for 'color'
- *      image: // value for 'image'
+ *      input: // value for 'input'
  *   },
  * });
  */

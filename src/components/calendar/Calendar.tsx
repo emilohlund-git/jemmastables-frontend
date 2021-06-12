@@ -1,18 +1,18 @@
 import moment from "moment";
 import React, { Key, useEffect, useState } from "react";
-import { useCreateAppointmentMutation } from "../../generated/graphql";
+import {
+  AppointmentsQuery,
+  useAppointmentsQuery,
+  useCreateAppointmentMutation,
+} from "../../generated/graphql";
 import DayBox from "./DayBox";
 import { getDaysInMonth } from "./utils/getDaysInMonth";
 moment.locale("sv");
 
 const Calendar: React.FC<{}> = () => {
   const [create] = useCreateAppointmentMutation();
-  const appointmentData = {
-    from: "15:00",
-    to: "16:00",
-    date: new Date(),
-    booked: false,
-  };
+
+  const { data, loading } = useAppointmentsQuery();
 
   const [currentMonth, setCurrentMonth] = useState(moment(new Date()));
   const [days, setDays] = useState(
@@ -99,7 +99,7 @@ const Calendar: React.FC<{}> = () => {
       </div>
       <div className="w-full flex flex-row flex-wrap">
         {days.map((day, i) => (
-          <DayBox key={i} day={day} />
+          <DayBox key={i} day={day} appointments={data as AppointmentsQuery} />
         ))}
       </div>
     </div>

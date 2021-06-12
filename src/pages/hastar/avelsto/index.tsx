@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import AddHorseForm from "../../../components/AddHorseForm";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import FloatingButton from "../../../components/FloatingButton";
+import FloatingButtonCategory from "../../../components/FloatingButtonCategory";
 import Horse from "../../../components/Horse";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
@@ -13,7 +13,8 @@ import { isServer } from "../../../utils/isServer";
 import { withApollo } from "../../../utils/withApollo";
 
 const index = () => {
-  const category = "avelsto";
+  const [showModal, setShowModal] = useState();
+  const category = "unghästar";
 
   const { loading: horseLoading, data: horseData } = useHorsesByCategoryQuery({
     variables: { category: category },
@@ -26,11 +27,11 @@ const index = () => {
   return (
     <Layout>
       {horseLoading ? (
-        <div className="flex justify-center align-middle">
+        <div className="flex justify-center align-middle z-10">
           <Spinner />
         </div>
       ) : (
-        <div className="flex flex-col mt-32 relative text-white w-full z-0">
+        <div className="flex flex-col mt-32 relative text-white w-full z-10">
           <div className="flex flex-col mx-auto justify-center">
             <h1 className="text-4xl uppercase text-white">{category}</h1>
             <hr className="bg-white my-5 w-full" />
@@ -47,7 +48,14 @@ const index = () => {
             </div>
           </div>
           {!userLoading && userData?.user ? (
-            <FloatingButton />
+            <div className="z-40">
+              <FloatingButtonCategory
+                category={true}
+                showModal={showModal}
+                setShowModal={setShowModal}
+              />
+              {showModal ? <AddHorseForm setShowModal={setShowModal} /> : <></>}
+            </div>
           ) : (
             <></>
           )}
@@ -57,4 +65,4 @@ const index = () => {
   );
 };
 
-export default withApollo({ ssr: false })(index);
+export default withApollo({ ssr: true })(index);

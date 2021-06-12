@@ -115,15 +115,17 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 className="bg-white text-black px-5 py-1 mt-3"
                 onClick={async () => {
                   setEdit(false);
-                  console.log(values);
                   const response = await update({
                     variables: {
-                      ...h,
+                      id: h?.id,
+                      name: h?.name,
+                      nickname: h?.nickname,
                       owner: values.owner,
                       after: values.after,
                       birthYear: parseInt(values.birthYear),
                       gender: values.gender,
                       color: values.color,
+                      image: h?.image
                     },
                   });
                   console.log(response);

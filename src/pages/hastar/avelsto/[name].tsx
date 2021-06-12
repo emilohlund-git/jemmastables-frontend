@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import FloatingButton from "../../../components/FloatingButton";
+import FloatingButtonHorse from "../../../components/FloatingButtonHorse";
 import HorseInfo from "../../../components/HorseInfo";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
@@ -13,6 +13,7 @@ const index = () => {
   const [edit, setEdit] = useState(false);
   const router = useRouter();
   const { name } = router.query;
+  
   const { loading: horseLoading, data: horseData } = useHorseByNameQuery({
     variables: { name: name as string },
   });
@@ -55,7 +56,7 @@ const index = () => {
               />
             </div>
             {!loading && userData?.user ? (
-              <FloatingButton setEdit={setEdit} />
+              <FloatingButtonHorse setEdit={setEdit} category={false} />
             ) : (
               <></>
             )}

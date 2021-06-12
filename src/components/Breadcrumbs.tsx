@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const convertBreadcrumb = (string) => {
+const convertBreadcrumb = (string: any) => {
   return decodeURI(string).toLowerCase();
 };
 

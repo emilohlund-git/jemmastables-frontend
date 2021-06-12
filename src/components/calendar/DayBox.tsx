@@ -1,15 +1,14 @@
-import React from "react";
 import moment from "moment";
+import React, { Key } from "react";
+import { AppointmentsQuery } from "../../generated/graphql";
 import Appointment from "./Appointment";
-import { useAppointmentsQuery } from "../../generated/graphql";
-import { format } from "path/posix";
 
 interface Props {
   day: Date;
+  appointments: AppointmentsQuery;
 }
 
 const DayBox = (props: Props) => {
-  const { data, loading } = useAppointmentsQuery();
   return (
     <div
       style={{ width: "14.28%" }}
@@ -29,18 +28,20 @@ const DayBox = (props: Props) => {
         </div>
         <div className="flex justify-center">
           <div className="flex flex-col justify-center align-middle">
-            {data?.appointments.map((appointment: any, i) => {
-              {
-                if (
-                  moment(props.day).format("LL") ===
-                  moment(appointment.date).format("LL")
-                ) {
-                  return <Appointment key={i} props={appointment} />;
-                } else {
-                  return null;
+            {props.appointments?.appointments.map(
+              (appointment: any, i: Key) => {
+                {
+                  if (
+                    moment(props.day).format("LL") ===
+                    moment(appointment.date).format("LL")
+                  ) {
+                    return <Appointment key={i} props={appointment} />;
+                  } else {
+                    return null;
+                  }
                 }
               }
-            })}
+            )}
           </div>
         </div>
       </div>
