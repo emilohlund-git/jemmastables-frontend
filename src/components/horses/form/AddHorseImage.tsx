@@ -31,15 +31,14 @@ const AddHorseImage = (props: Props) => {
                 contentType: imageFile.type,
               }
             );
-            const horseResponse = await update({
+            await update({
               variables: {
                 id: props.horse?.id,
                 input: {
                   images: [...props.horse.images!, response],
                 },
-              },
+              }
             });
-            console.log(response, horseResponse);
             message.success(info.file.name + " uppladdad!");
           }
         }}

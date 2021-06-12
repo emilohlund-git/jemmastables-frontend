@@ -24,7 +24,7 @@ const AddHorseForm = ({ setShowModal }: any) => {
           const { errors } = await create({
             variables: { input: values },
             update: (cache) => {
-              cache.evict({ fieldName: "horses:{}" });
+              cache.evict({ fieldName: "horsesByCategory" });
             },
           });
 
@@ -34,7 +34,6 @@ const AddHorseForm = ({ setShowModal }: any) => {
 
           if (!errors) {
             setShowModal(false);
-            router.reload();
           } else {
             message.error(errors);
           }

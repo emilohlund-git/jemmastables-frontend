@@ -2,6 +2,7 @@ import { Upload } from "antd";
 import React, { useState } from "react";
 import { Horse, useUpdateHorseMutation } from "../../../generated/graphql";
 import { putStorageItem } from "../../../utils/firebase/putStorageItem";
+import { FaCross } from "react-icons/fa";
 
 interface Props {
   image: string;
@@ -33,6 +34,9 @@ const ChangeHorseImage = (props: Props) => {
                 image: URL,
               },
             },
+            update: (cache) => {
+              cache.evict({ fieldName: "horseByName" });
+            },
           });
           console.log(response);
         } else {
@@ -41,13 +45,13 @@ const ChangeHorseImage = (props: Props) => {
       }}
     >
       <div
-        className="w-1/3 border-2 border-dashed p-2"
+        className="w-full lg:w-1/1 border-2 border-dashed"
         style={{
           backgroundImage: `url(${image})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
           height: "500px",
-          width: "23vw",
+          width: "28.1vw",
         }}
       ></div>
     </Upload>

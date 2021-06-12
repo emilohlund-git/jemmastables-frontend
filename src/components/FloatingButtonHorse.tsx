@@ -1,13 +1,16 @@
 import { useApolloClient } from "@apollo/client";
+import { Upload, message } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
-import { FaEdit, FaPlus } from "react-icons/fa";
+import { FaEdit, FaPlus, FaPlusCircle } from "react-icons/fa";
 import { Action, Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import {
   useDeleteHorseMutation,
   useHorseByNameQuery,
+  useUpdateHorseMutation,
 } from "../generated/graphql";
+import { putStorageItem } from "../utils/firebase/putStorageItem";
 
 const FloatingButtonHorse = ({ category, setEdit }: any) => {
   const apolloClient = useApolloClient();
@@ -19,6 +22,8 @@ const FloatingButtonHorse = ({ category, setEdit }: any) => {
   const { data, loading } = useHorseByNameQuery({
     variables: { name: name as string },
   });
+
+  const [update] = useUpdateHorseMutation();
 
   const handleClick = async () => {
     if (!category) {
@@ -44,6 +49,47 @@ const FloatingButtonHorse = ({ category, setEdit }: any) => {
       }}
       style={{ bottom: 24, right: 24, zIndex: 1000 }}
     >
+      <Action
+        style={{ background: "#228B22", outline: "none" }}
+        text={`Lägg till bilder`}
+      >
+        <Upload
+          accept="image/*"
+          showUploadList={false}
+          multiple={true}
+          onChange={async (info) => {
+            if (info.file.status === "uploading") {
+              return;
+            }
+            if (info.file.status === "done") {
+              if (data?.horseByName) {
+                const imageFile = info.file;
+                const response = await putStorageItem(
+                  imageFile.originFileObj,
+                  name as string,
+                  {
+                    contentType: imageFile.type,
+                  }
+                );
+                await update({
+                  variables: {
+                    id: data!.horseByName!.id,
+                    input: {
+                      images: [...data!.horseByName!.images!, response],
+                    },
+                  },
+                  update: (cache) => {
+                    cache.evict({ fieldName: "horseByName" });
+                  },
+                });
+                message.success(imageFile.name + " uppladdad!");
+              }
+            }
+          }}
+        >
+          <FaPlusCircle className="text-white mt-1 text-lg" />
+        </Upload>
+      </Action>
       <Action
         style={{ background: "#228B22", outline: "none" }}
         text={`Ändra ${name}`}

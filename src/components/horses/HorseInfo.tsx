@@ -1,10 +1,21 @@
 import React, { Key, useState } from "react";
+import { Slide } from "react-slideshow-image";
+import "react-slideshow-image/dist/styles.css";
 import { SRLWrapper } from "simple-react-lightbox";
 import { useUpdateHorseMutation } from "../../generated/graphql";
+import DeleteHorseButton from "./DeleteImageButton";
 import ChangeHorseImage from "./form/ChangeHorseImage";
 import ChangeHorseImages from "./form/ChangeHorseImages";
 
 const HorseInfo = ({ setEdit, edit, h }: any) => {
+  const properties = {
+    duration: 2000,
+    transitionDuration: 500,
+    infinite: true,
+    prevArrow: <></>,
+    nextArrow: <></>,
+  };
+
   const [hover, setHover] = useState(true);
   const [update] = useUpdateHorseMutation();
   const [values, setValues] = useState({
@@ -16,27 +27,16 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
     color: h?.color,
   });
 
-  const images = h.images.map((image: string, i: Key) => {
-    return (
-      <img
-        key={i}
-        src={image}
-        className="h-full w-1/4 flex object-cover cursor-pointer px-1 mt-1"
-        alt={h?.name}
-      />
-    );
-  });
-
   return (
     <>
       <div
         onMouseEnter={() => setHover(false)}
         onMouseLeave={() => setHover(true)}
-        className="flex relative w-full mx-40 mt-3"
+        className="flex flex-col lg:flex-row relative w-full mx-1 lg:mx-40 mt-3"
       >
-        <div className="text-xl bg-black bg-opacity-60 mb-2 rounded-lg w-2/3">
+        <div className="text-xl bg-black mb-2 w-full h-full lg:w-2/3 mr-2">
           <div className="flex flex-col">
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Smeknamn:</p>{" "}
               {!edit ? (
                 h?.nickname
@@ -52,7 +52,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Ägare:</p>{" "}
               {!edit ? (
                 h?.owner
@@ -68,7 +68,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Efter:</p>{" "}
               {!edit ? (
                 h?.after
@@ -84,7 +84,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Födelseår:</p>{" "}
               {!edit ? (
                 h?.birthYear
@@ -100,7 +100,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Kön:</p>{" "}
               {!edit ? (
                 h?.gender
@@ -116,7 +116,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               <p>Färg:</p>{" "}
               {!edit ? (
                 h?.color
@@ -132,7 +132,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                 />
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-white">
               {edit ? (
                 <button
                   className="bg-white text-black px-5 py-1 mt-3"
@@ -142,15 +142,16 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                       variables: {
                         id: h?.id,
                         input: {
-                          name: h?.name,
-                          nickname: h?.nickname,
+                          nickname: values.nickname,
                           owner: values.owner,
                           after: values.after,
                           birthYear: parseInt(values.birthYear),
                           gender: values.gender,
                           color: values.color,
-                          image: h?.image,
                         },
+                      },
+                      update: (cache) => {
+                        cache.evict({ fieldName: "horseByName" });
                       },
                     });
                     console.log(response);
@@ -166,30 +167,46 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
         </div>
         {!edit ? (
           <div
-            className="w-1/3"
+            className="w-full lg:w-1/1"
             style={{
               backgroundImage: `url(${h?.image})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
               height: "500px",
-              width: "30vw",
             }}
           ></div>
         ) : (
           <ChangeHorseImage horse={h} image={h?.image} />
         )}
       </div>
-      <div className="w-full flex flex-row mx-40 mt-1">
+      <div className="w-full flex flex-row flex-wrap mx-1 lg:mx-40 mt-1">
         {edit ? (
           h.images.map((image: string, i: Key) => {
-            return <ChangeHorseImages key={i} image={image} horse={h} />;
+            return (
+              <div key={i} className="relative">
+                <ChangeHorseImages image={image} horse={h} />
+                <DeleteHorseButton image={image} horse={h} />
+              </div>
+            );
           })
         ) : (
-          <SRLWrapper>
-            <div className="relative w-full flex flex-row overflow-hidden h-40">
-              {images}
-            </div>
-          </SRLWrapper>
+          <div className="w-full mx-40 overflow-hidden">
+            <SRLWrapper>
+              <Slide easing="ease" {...properties}>
+                {h.images.map((each: string, index: Key) => (
+                  <div
+                    key={index}
+                    className="relative w-full flex flex-row h-80"
+                  >
+                    <img
+                      className="h-full w-full flex object-cover cursor-pointer mt-1"
+                      src={each}
+                    />
+                  </div>
+                ))}
+              </Slide>{" "}
+            </SRLWrapper>
+          </div>
         )}
       </div>
     </>

@@ -1,5 +1,7 @@
 import { Upload } from "antd";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 import { Horse, useUpdateHorseMutation } from "../../../generated/graphql";
 import { putStorageItem } from "../../../utils/firebase/putStorageItem";
 
@@ -9,6 +11,7 @@ interface Props {
 }
 
 const ChangeHorseImages = (props: Props) => {
+  const router = useRouter();
   const [update] = useUpdateHorseMutation();
   const [image, setImage] = useState(props.image);
   return (
@@ -46,10 +49,10 @@ const ChangeHorseImages = (props: Props) => {
         }
       }}
     >
-      <div className="relative w-full flex flex-row overflow-hidden h-40 border-2 border-dashed">
+      <div className="relative w-full overflow-hidden h-40 border-2 border-dashed z-10">
         <img
           src={image}
-          className="h-full w-full flex object-cover cursor-pointer mx-1 mt-1"
+          className="h-full w-full flex object-cover cursor-pointer mx-1 mt-1 z-10"
         />
       </div>
     </Upload>
