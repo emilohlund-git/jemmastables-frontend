@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCbyakYCd97KrJghUYSfi83nBytfnP2oYw",
-  authDomain: "jemmastables-3255c.firebaseapp.com",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: "jemmastables-3255c",
   storageBucket: "jemmastables-3255c.appspot.com",
   messagingSenderId: "709437780906",
-  appId: "1:709437780906:web:9dd794c7f691ae77ee71d3",
-  measurementId: "G-X0Q6J2HN9R",
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 if (!firebase.apps.length) {
