@@ -1,21 +1,13 @@
 import React, { Key, useState } from "react";
-import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { SRLWrapper } from "simple-react-lightbox";
+import { options } from "../../config/LightBoxConfig";
 import { useUpdateHorseMutation } from "../../generated/graphql";
-import DeleteHorseButton from "./DeleteImageButton";
+import DeleteImageButton from "./DeleteImageButton";
 import ChangeHorseImage from "./form/ChangeHorseImage";
 import ChangeHorseImages from "./form/ChangeHorseImages";
 
 const HorseInfo = ({ setEdit, edit, h }: any) => {
-  const properties = {
-    duration: 2000,
-    transitionDuration: 500,
-    infinite: true,
-    prevArrow: <></>,
-    nextArrow: <></>,
-  };
-
   const [hover, setHover] = useState(true);
   const [update] = useUpdateHorseMutation();
   const [values, setValues] = useState({
@@ -179,34 +171,29 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
           <ChangeHorseImage horse={h} image={h?.image} />
         )}
       </div>
-      <div className="w-full flex flex-row flex-wrap mx-1 lg:mx-40 mt-1">
+      <div className="w-full flex mx-1 lg:mx-40 mt-1">
         {edit ? (
-          h.images.map((image: string, i: Key) => {
-            return (
-              <div key={i} className="relative">
-                <ChangeHorseImages image={image} horse={h} />
-                <DeleteHorseButton image={image} horse={h} />
-              </div>
-            );
-          })
-        ) : (
-          <div className="w-full mx-40 overflow-hidden">
-            <SRLWrapper>
-              <Slide easing="ease" {...properties}>
-                {h.images.map((each: string, index: Key) => (
-                  <div
-                    key={index}
-                    className="relative w-full flex flex-row h-80"
-                  >
-                    <img
-                      className="h-full w-full flex object-cover cursor-pointer mt-1"
-                      src={each}
-                    />
-                  </div>
-                ))}
-              </Slide>{" "}
-            </SRLWrapper>
+          <div className="w-full h-40 flex flex-row flex-wrap">
+            {h.images.map((image: string, i: Key) => {
+              return (
+                <div className="relative w-1/4 cursor-pointer px-1">
+                  <ChangeHorseImages image={image} horse={h} />
+                  <DeleteImageButton image={image} horse={h} />
+                </div>
+              );
+            })}
           </div>
+        ) : (
+          <SRLWrapper options={options}>
+            <div className="w-full h-40 flex flex-wrap">
+              {h.images.map((each: string, index: Key) => (
+                <img
+                  className="h-full w-1/4 object-cover cursor-pointer px-1 py-1"
+                  src={each}
+                />
+              ))}
+            </div>
+          </SRLWrapper>
         )}
       </div>
     </>
