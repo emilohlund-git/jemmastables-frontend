@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import FloatingButtonHorse from "../../../components/FloatingButtonHorse";
-import HorseInfo from "../../../components/HorseInfo";
+import HorseInfo from "../../../components/horses/HorseInfo";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
 import { useHorseByNameQuery, useUserQuery } from "../../../generated/graphql";
@@ -13,7 +13,7 @@ const index = () => {
   const [edit, setEdit] = useState(false);
   const router = useRouter();
   const { name } = router.query;
-  
+
   const { loading: horseLoading, data: horseData } = useHorseByNameQuery({
     variables: { name: name as string },
   });
@@ -21,10 +21,6 @@ const index = () => {
   const { loading, data: userData } = useUserQuery({
     skip: isServer(),
   });
-
-  useEffect(() => {
-    console.log(edit);
-  }, [edit]);
 
   return (
     <Layout>
@@ -40,15 +36,12 @@ const index = () => {
                 {horseData?.horseByName?.name}
               </h1>
               <hr className="bg-white my-5 w-full" />
-              <p className="text-center">
-                '{horseData?.horseByName?.nickname}'
-              </p>
             </div>
-            <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60">
+            <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 flex justify-center">
               <Breadcrumbs />
             </div>
 
-            <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap">
+            <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap justify-center">
               <HorseInfo
                 h={horseData?.horseByName}
                 edit={edit}

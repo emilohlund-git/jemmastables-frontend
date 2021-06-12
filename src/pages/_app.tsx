@@ -4,6 +4,7 @@ import "./_app.css";
 import "antd/dist/antd.css";
 import "tailwindcss/tailwind.css";
 import Footer from "../components/Footer";
+import SimpleReactLightbox from "simple-react-lightbox";
 
 const MyApp = ({ Component, pageProps }: any) => {
   return (
@@ -14,7 +15,9 @@ const MyApp = ({ Component, pageProps }: any) => {
           rel="stylesheet"
         />
       </Head>
-      <Component {...pageProps} />
+      <SimpleReactLightbox>
+        <Component {...pageProps} />
+      </SimpleReactLightbox>
       <Footer />
     </>
   );

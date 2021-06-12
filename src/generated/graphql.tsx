@@ -77,6 +77,7 @@ export type HorseUpdate = {
   gender?: Maybe<Scalars['String']>;
   color?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Scalars['String']>>;
   category?: Maybe<Scalars['String']>;
 };
 

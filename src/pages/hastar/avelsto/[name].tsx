@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import FloatingButtonHorse from "../../../components/FloatingButtonHorse";
-import HorseInfo from "../../../components/HorseInfo";
+import HorseInfo from "../../../components/horses/HorseInfo";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
 import { useHorseByNameQuery, useUserQuery } from "../../../generated/graphql";

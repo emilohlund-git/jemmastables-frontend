@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Key, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ const convertBreadcrumb = (string: any) => {
 
 const Breadcrumbs = () => {
   const router = useRouter();
-  const [breadcrumbs, setBreadcrumbs] = useState(null);
+  const [breadcrumbs, setBreadcrumbs] = useState(null as any);
 
   useEffect(() => {
     if (router) {
@@ -38,20 +38,22 @@ const Breadcrumbs = () => {
             <a className="capitalize ml-1">Hem</a>
           </Link>
         </li>
-        {breadcrumbs.map((breadcrumb, i) => {
-          return (
-            <div key={i} className="flex flex-row">
-              <span className="mx-3">/</span>
-              <li>
-                <Link href={breadcrumb.href}>
-                  <a className="capitalize">
-                    {convertBreadcrumb(breadcrumb.breadcrumb)}
-                  </a>
-                </Link>
-              </li>
-            </div>
-          );
-        })}
+        {breadcrumbs.map(
+          (breadcrumb: { href: string; breadcrumb: string }, i: Key) => {
+            return (
+              <div key={i} className="flex flex-row">
+                <span className="mx-3">/</span>
+                <li>
+                  <Link href={breadcrumb.href}>
+                    <a className="capitalize">
+                      {convertBreadcrumb(breadcrumb.breadcrumb)}
+                    </a>
+                  </Link>
+                </li>
+              </div>
+            );
+          }
+        )}
       </ol>
     </nav>
   );

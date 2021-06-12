@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AddHorseForm from "../../../components/AddHorseForm";
+import AddHorseForm from "../../../components/horses/form/AddHorseForm";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import FloatingButtonCategory from "../../../components/FloatingButtonCategory";
-import Horse from "../../../components/Horse";
+import Horse from "../../../components/horses/Horse";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
 import {

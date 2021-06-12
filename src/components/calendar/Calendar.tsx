@@ -2,15 +2,14 @@ import moment from "moment";
 import React, { Key, useEffect, useState } from "react";
 import {
   AppointmentsQuery,
-  useAppointmentsQuery,
-  useCreateAppointmentMutation,
+  useAppointmentsQuery
 } from "../../generated/graphql";
 import DayBox from "./DayBox";
-import { getDaysInMonth } from "./utils/getDaysInMonth";
+import { getDaysInMonth } from "../../utils/calendar/getDaysInMonth";
 moment.locale("sv");
 
 const Calendar: React.FC<{}> = () => {
-  const [create] = useCreateAppointmentMutation();
+  // const [create] = useCreateAppointmentMutation();
 
   const { data, loading } = useAppointmentsQuery();
 
@@ -77,6 +76,27 @@ const Calendar: React.FC<{}> = () => {
         >
           {">"}
         </button>
+        {/* 
+        <button
+          onClick={async () => {
+            await create({
+              variables: {
+                input: {
+                  from: "15:00",
+                  to: "16:00",
+                  date: new Date() + "",
+                  booked: false,
+                },
+              },
+              update: (cache) => {
+                cache.evict({ fieldName: "appointments:{}" });
+              },
+            });
+          }}
+        >
+          Add Appointment
+        </button>
+        */}
       </div>
       <div className="flex mb-2">
         {days.slice(0, 7).map((day: Date, i: Key) => (

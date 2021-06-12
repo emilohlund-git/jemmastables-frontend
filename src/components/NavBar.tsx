@@ -53,7 +53,7 @@ const NavBar = () => {
 
   return (
     <div
-      className={`flex flex-row fixed transition-all z-40 bg-black ${
+      className={`flex flex-row fixed transition-all z-30 bg-black ${
         minimized ? "bg-opacity-60 py-4" : "bg-opacity-100 py-10"
       }  w-full top-0`}
     >

@@ -6,6 +6,7 @@ module.exports = (phase, { defaultConfig }) => {
         "www.instagram.com",
         "www.localhost:3000",
         "www.jemmastables.com",
+        "firebasestorage.googleapis.com"
       ],
     },
     i18n: {

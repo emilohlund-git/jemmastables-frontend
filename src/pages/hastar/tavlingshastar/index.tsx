@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AddHorseForm from "../../../components/AddHorseForm";
+import AddHorseForm from "../../../components/horses/form/AddHorseForm";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import FloatingButtonCategory from "../../../components/FloatingButtonCategory";
-import Horse from "../../../components/Horse";
+import Horse from "../../../components/horses/Horse";
 import Layout from "../../../components/Layout";
 import Spinner from "../../../components/Spinner";
 import {
@@ -31,7 +31,7 @@ const index = () => {
           <Spinner />
         </div>
       ) : (
-        <div className="flex flex-col mt-32 relative text-white w-full z-10">
+        <div className="flex flex-col mt-32 relative text-white w-full z-10 justify-center mx-auto">
           <div className="flex flex-col mx-auto justify-center">
             <h1 className="text-4xl uppercase text-white">{category}</h1>
             <hr className="bg-white my-5 w-full" />
@@ -40,7 +40,7 @@ const index = () => {
             <Breadcrumbs />
           </div>
 
-          <div className="flex justify-center w-full align-middle">
+          <div className="flex justify-center w-full align-middle mt-3">
             <div className="mb-20 flex flex-col md:flex-row flex-wrap justify-center">
               {horseData?.horsesByCategory.map((horse) => {
                 return <Horse key={horse.id} h={horse} />;

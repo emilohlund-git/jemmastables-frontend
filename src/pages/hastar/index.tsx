@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import HorseCategory from "../../components/HorseCategory";
+import HorseCategory from "../../components/horses/HorseCategory";
 import Layout from "../../components/Layout";
 import Spinner from "../../components/Spinner";
 import { useHorsesQuery } from "../../generated/graphql";
