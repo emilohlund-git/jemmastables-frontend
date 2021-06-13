@@ -1,12 +1,18 @@
-import { Modal, Select, TimePicker, DatePicker, Form, Button } from "antd";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Modal,
+  Radio,
+  Select,
+  TimePicker,
+} from "antd";
+import locale from "antd/lib/date-picker/locale/sv_SE";
 import moment from "moment";
 import "moment/locale/sv";
-import locale from "antd/lib/date-picker/locale/sv_SE";
-import {
-  useCreateAppointmentMutation,
-  useUpdateAppointmentMutation,
-} from "../../generated/graphql";
+import { Store } from "rc-field-form/lib/interface";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { useCreateAppointmentMutation } from "../../generated/graphql";
 
 interface Props {
   setVisible: Dispatch<SetStateAction<boolean>>;
@@ -17,18 +23,24 @@ interface Props {
 const AddAppointmentModal = (props: Props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [createAppointment] = useCreateAppointmentMutation();
+  const [disabled, setDisabled] = useState(false);
 
-  const { Option } = Select;
-
-  const handleOk = async (values: any) => {
+  const handleOk = async (values: Store) => {
     setConfirmLoading(true);
+    if (values.times == undefined) {
+      values.times = ["06:00", "21:00"];
+    } else {
+      values.times[0] = values.times[0].format("HH:mm");
+      values.times[1] = values.times[1].format("HH:mm");
+    }
 
     const { errors } = await createAppointment({
       variables: {
         input: {
-          from: values.times[0].format("HH:mm"),
-          to: values.times[1].format("HH:mm"),
+          from: values.times[0],
+          to: values.times[1],
           date: values.date,
+          type: values.type,
           booked: false,
         },
       },
@@ -40,6 +52,7 @@ const AddAppointmentModal = (props: Props) => {
       props.setVisible(false);
       setConfirmLoading(false);
     } else {
+      setConfirmLoading(false);
       console.log(errors);
     }
   };
@@ -79,29 +92,46 @@ const AddAppointmentModal = (props: Props) => {
             name="type"
             rules={[{ required: true, message: "Ange typ av tid" }]}
           >
-            <Select
-              showSearch
-              placeholder="Välj typ av tid"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button
+                value="ridlektion"
+                onChange={() => {
+                  setDisabled(true);
+                }}
+              >
+                Ridlektion
+              </Radio.Button>
+              <Radio.Button
+                value="självhushållning"
+                onChange={() => {
+                  setDisabled(false);
+                }}
+              >
+                Självhushållning
+              </Radio.Button>
+              <Radio.Button
+                value="öppen"
+                onChange={() => {
+                  setDisabled(false);
+                }}
+              >
+                Öppen bana
+              </Radio.Button>
+            </Radio.Group>
           </Form.Item>
           <Form.Item
             label="Välj tider"
             name="times"
-            rules={[{ required: true, message: "Ange ett tidsintervall" }]}
+            rules={[{ required: !disabled, message: "Ange ett tidsintervall" }]}
           >
             <TimePicker.RangePicker
+              disabled={disabled}
               className="w-full"
               placeholder={["Välj starttid", "Välj sluttid"]}
               format="HH:mm"
               minuteStep={10}
+              hideDisabledOptions={true}
+              disabledHours={() => [0, 1, 2, 3, 4, 5, 22, 23]}
             />
           </Form.Item>
           <Form.Item>

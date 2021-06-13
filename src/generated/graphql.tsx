@@ -23,6 +23,7 @@ export type Appointment = {
   to: Scalars['String'];
   date: Scalars['String'];
   booked: Scalars['Boolean'];
+  type: Scalars['String'];
 };
 
 export type AppointmentInput = {
@@ -30,6 +31,7 @@ export type AppointmentInput = {
   to: Scalars['String'];
   date: Scalars['String'];
   booked: Scalars['Boolean'];
+  type: Scalars['String'];
 };
 
 export type FieldError = {
@@ -188,7 +190,7 @@ export type UserResponse = {
 
 export type RegularAppointmentFragment = (
   { __typename?: 'Appointment' }
-  & Pick<Appointment, 'id' | 'from' | 'to' | 'date' | 'booked'>
+  & Pick<Appointment, 'id' | 'from' | 'to' | 'date' | 'booked' | 'type'>
 );
 
 export type RegularErrorFragment = (
@@ -407,6 +409,7 @@ export const RegularAppointmentFragmentDoc = gql`
   to
   date
   booked
+  type
 }
     `;
 export const RegularHorseFragmentDoc = gql`

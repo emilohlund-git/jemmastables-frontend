@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Appointment,
-  useUpdateAppointmentMutation
+  useUpdateAppointmentMutation,
 } from "../../generated/graphql";
 
 interface Props {
@@ -22,8 +22,16 @@ const AppointmentPill = (props: Props) => {
         const response = await book();
         console.log(response);
       }}
-      className={`transition-all hidden sm:flex w-22 rounded-lg text-sm shadow ${
-        props.appointment.booked ? "bg-gray-400 bg-opacity-30 pointer-events-none" : "bg-gray-50 cursor-pointer hover:bg-gray-100"
+      className={`transition-all hidden sm:flex w-22 rounded-lg ${
+        props.appointment.type === "ridlektion"
+          ? "bg-red-300 pointer-events-none"
+          : ""
+      } ${
+        props.appointment.type === "öppen" ? "bg-green-300" : ""
+      } text-sm shadow ${
+        props.appointment.booked
+          ? "bg-gray-400 bg-opacity-30 pointer-events-none"
+          : "bg-gray-50 cursor-pointer hover:bg-gray-100"
       }  my-1 py-1 px-2`}
     >
       {props.appointment.from}-{props.appointment.to}
