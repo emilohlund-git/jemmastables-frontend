@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import React, { Key, useState } from "react";
 import "react-slideshow-image/dist/styles.css";
 import { SRLWrapper } from "simple-react-lightbox";
@@ -8,6 +9,7 @@ import ChangeHorseImage from "./form/ChangeHorseImage";
 import ChangeHorseImages from "./form/ChangeHorseImages";
 
 const HorseInfo = ({ setEdit, edit, h }: any) => {
+  const [loading, setLoading] = useState(false);
   const [hover, setHover] = useState(true);
   const [update] = useUpdateHorseMutation();
   const [values, setValues] = useState({
@@ -126,11 +128,25 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
             </div>
             <div className="flex gap-2 text-white">
               {edit ? (
-                <button
-                  className="bg-white text-black px-5 py-1 mt-3"
+                <Button
+                  className="mt-3"
+                  type="primary"
+                  loading={loading}
                   onClick={async () => {
-                    setEdit(false);
-                    const response = await update({
+                    if (
+                      values.nickname == h?.nickname &&
+                      values.owner == h?.owner &&
+                      values.after == h?.after &&
+                      (values.birthYear as number) == h?.birthYear &&
+                      values.gender == h?.gender &&
+                      values.color == h?.color
+                    ) {
+                      setEdit(false);
+                      return;
+                    } else {
+                      setLoading(true);
+                    }
+                    const { errors } = await update({
                       variables: {
                         id: h?.id,
                         input: {
@@ -146,11 +162,14 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
                         cache.evict({ fieldName: "horseByName" });
                       },
                     });
-                    console.log(response);
+                    if (!errors) {
+                      setLoading(false);
+                      setEdit(false);
+                    }
                   }}
                 >
                   Klar
-                </button>
+                </Button>
               ) : (
                 <></>
               )}
@@ -185,7 +204,7 @@ const HorseInfo = ({ setEdit, edit, h }: any) => {
           </div>
         ) : (
           <SRLWrapper options={options}>
-            <div className="w-full h-40 flex flex-wrap">
+            <div className="w-full h-44 flex flex-wrap">
               {h.images.map((each: string, index: Key) => (
                 <img
                   className="h-full w-1/4 object-cover cursor-pointer px-1 py-1"

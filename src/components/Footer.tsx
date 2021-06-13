@@ -4,7 +4,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-      <div className="bg-black text-white px-10 sm:px-20 md:px-40 lg:flex lg:flex-col lg:px-60 z-0">
+      <div className="bg-black text-white px-10 sm:px-20 md:px-40 lg:flex lg:flex-col lg:px-60 z-0 mt-20">
         <div className="py-10 text-white lg:text-left flex flex-row w-full justify-center z-0">
           <img
             src="/images/Jemma_stable_logo_vit.png"

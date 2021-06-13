@@ -1,7 +1,8 @@
 import moment from "moment";
-import React, { Key } from "react";
+import React, { Key, useState } from "react";
 import { AppointmentsQuery } from "../../generated/graphql";
-import Appointment from "./Appointment";
+import AddAppointmentModal from "./AddAppointmentModal";
+import AppointmentPill from "./AppointmentPill";
 
 interface Props {
   day: Date;
@@ -9,10 +10,18 @@ interface Props {
 }
 
 const DayBox = (props: Props) => {
+  const [visible, setVisible] = useState(false);
+  const [isPreviousDate, _] = useState(
+    moment(props.day).add(1, "days").isBefore()
+  );
+
   return (
     <div
       style={{ width: "14.28%" }}
       className={`transition-all h-13 md:h-28 lg:h-36 text-black p-1`}
+      onClick={() => {
+        setVisible(true);
+      }}
     >
       <div
         className={`${
@@ -35,7 +44,13 @@ const DayBox = (props: Props) => {
                     moment(props.day).format("LL") ===
                     moment(appointment.date).format("LL")
                   ) {
-                    return <Appointment key={i} props={appointment} />;
+                    return (
+                      <AppointmentPill
+                        key={i}
+                        day={props.day}
+                        appointment={appointment}
+                      />
+                    );
                   } else {
                     return null;
                   }
@@ -45,6 +60,11 @@ const DayBox = (props: Props) => {
           </div>
         </div>
       </div>
+      {!isPreviousDate ? (
+        <AddAppointmentModal day={props.day} visible={visible} setVisible={setVisible} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

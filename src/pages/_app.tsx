@@ -18,7 +18,6 @@ const MyApp = ({ Component, pageProps }: any) => {
       <SimpleReactLightbox>
         <Component {...pageProps} />
       </SimpleReactLightbox>
-      <Footer />
     </>
   );
 };

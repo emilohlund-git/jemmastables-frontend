@@ -2,7 +2,7 @@ import { useApolloClient } from "@apollo/client";
 import { Upload, message } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
-import { FaEdit, FaPlus, FaPlusCircle } from "react-icons/fa";
+import { FaEdit, FaPlus, FaPlusCircle, FaTrashAlt } from "react-icons/fa";
 import { Action, Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import {
@@ -50,13 +50,13 @@ const FloatingButtonHorse = ({ category, setEdit }: any) => {
       style={{ bottom: 24, right: 24, zIndex: 1000 }}
     >
       <Action
-        style={{ background: "#228B22", outline: "none" }}
-        text={`Lägg till bilder`}
+        style={{ background: "#228B22", outline: "none", paddingTop: "3px" }}
+        text={`Lägg till bild`}
       >
         <Upload
           accept="image/*"
           showUploadList={false}
-          multiple={true}
+          multiple={false}
           onChange={async (info) => {
             if (info.file.status === "uploading") {
               return;
@@ -102,7 +102,7 @@ const FloatingButtonHorse = ({ category, setEdit }: any) => {
         text={`Ta bort ${name}`}
         onClick={handleClick}
       >
-        <FaEdit className="text-white" />
+        <FaTrashAlt className="text-white" />
       </Action>
     </Fab>
   );

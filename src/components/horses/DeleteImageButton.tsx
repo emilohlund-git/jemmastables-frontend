@@ -12,7 +12,7 @@ interface Props {
 const DeleteHorseButton = (props: Props) => {
   const [update] = useUpdateHorseMutation();
   return (
-    <Tooltip placement="topRight" title="Ta bort bilden">
+    <Tooltip placement="topRight" title="Ta bort bild">
       <FaTrashAlt
         onClick={async () => {
           const new_arr = props.horse.images?.filter(
