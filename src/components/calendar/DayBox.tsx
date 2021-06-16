@@ -10,25 +10,22 @@ interface Props {
 }
 
 const DayBox = (props: Props) => {
-  const [visible, setVisible] = useState(false);
   const [isPreviousDate, _] = useState(
     moment(props.day).add(1, "days").isBefore()
   );
 
   return (
+    //FIXME: Fix CSS, modal popping up when clicking appointment pills. Should only popup clicking overlaying div.
     <div
       style={{ width: "14.28%" }}
       className={`transition-all h-13 md:h-28 lg:h-36 text-black p-1`}
-      onClick={() => {
-        setVisible(true);
-      }}
     >
       <div
         className={`${
           moment(props.day).add(1, "days").isBefore()
             ? "bg-gray-300"
             : "bg-white hover:shadow-md"
-        } transition-all font-thin h-full py-2 rounded-lg flex align-top text-sm md:text-lg flex-col`}
+        } transition-all font-thin h-full py-2 rounded-lg flex align-top text-sm md:text-lg flex-col z-10`}
       >
         <div className="flex justify-center">
           {moment(props.day).format("LL") === moment().format("LL")
@@ -45,11 +42,16 @@ const DayBox = (props: Props) => {
                     moment(appointment.date).format("LL")
                   ) {
                     return (
-                      <AppointmentPill
-                        key={i}
-                        day={props.day}
-                        appointment={appointment}
-                      />
+                      <div key={i}>
+                        {!isPreviousDate ? (
+                          <AppointmentPill
+                            day={props.day}
+                            appointment={appointment}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     );
                   } else {
                     return null;
@@ -60,11 +62,6 @@ const DayBox = (props: Props) => {
           </div>
         </div>
       </div>
-      {!isPreviousDate ? (
-        <AddAppointmentModal day={props.day} visible={visible} setVisible={setVisible} />
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

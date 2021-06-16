@@ -1,14 +1,5 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Modal,
-  Radio,
-  Select,
-  TimePicker,
-} from "antd";
+import { Button, DatePicker, Form, Modal, Radio, TimePicker } from "antd";
 import locale from "antd/lib/date-picker/locale/sv_SE";
-import moment from "moment";
 import "moment/locale/sv";
 import { Store } from "rc-field-form/lib/interface";
 import React, { Dispatch, SetStateAction, useState } from "react";
@@ -17,7 +8,6 @@ import { useCreateAppointmentMutation } from "../../generated/graphql";
 interface Props {
   setVisible: Dispatch<SetStateAction<boolean>>;
   visible: boolean;
-  day: Date;
 }
 
 const AddAppointmentModal = (props: Props) => {
@@ -27,13 +17,6 @@ const AddAppointmentModal = (props: Props) => {
 
   const handleOk = async (values: Store) => {
     setConfirmLoading(true);
-    if (values.times == undefined) {
-      values.times = ["06:00", "21:00"];
-    } else {
-      values.times[0] = values.times[0].format("HH:mm");
-      values.times[1] = values.times[1].format("HH:mm");
-    }
-
     const { errors } = await createAppointment({
       variables: {
         input: {
@@ -42,6 +25,7 @@ const AddAppointmentModal = (props: Props) => {
           date: values.date,
           type: values.type,
           booked: false,
+          bookedBy: ''
         },
       },
       update: (cache) => {
@@ -72,13 +56,7 @@ const AddAppointmentModal = (props: Props) => {
       onCancel={handleCancel}
       footer={null}
     >
-      <Form
-        initialValues={{
-          date: moment(props.day),
-        }}
-        onFinish={handleOk}
-        layout="vertical"
-      >
+      <Form onFinish={handleOk} layout="vertical">
         <div className="flex flex-col">
           <Form.Item
             label="Datum"

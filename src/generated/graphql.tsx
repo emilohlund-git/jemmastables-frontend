@@ -23,6 +23,7 @@ export type Appointment = {
   to: Scalars['String'];
   date: Scalars['String'];
   booked: Scalars['Boolean'];
+  bookedBy: Scalars['String'];
   type: Scalars['String'];
 };
 
@@ -31,6 +32,7 @@ export type AppointmentInput = {
   to: Scalars['String'];
   date: Scalars['String'];
   booked: Scalars['Boolean'];
+  bookedBy: Scalars['String'];
   type: Scalars['String'];
 };
 
@@ -108,6 +110,7 @@ export type MutationDeleteAppointmentArgs = {
 
 
 export type MutationUpdateAppointmentArgs = {
+  bookedBy: Scalars['String'];
   booked: Scalars['Boolean'];
   id: Scalars['Float'];
 };
@@ -190,7 +193,7 @@ export type UserResponse = {
 
 export type RegularAppointmentFragment = (
   { __typename?: 'Appointment' }
-  & Pick<Appointment, 'id' | 'from' | 'to' | 'date' | 'booked' | 'type'>
+  & Pick<Appointment, 'id' | 'from' | 'to' | 'date' | 'booked' | 'bookedBy' | 'type'>
 );
 
 export type RegularErrorFragment = (
@@ -245,6 +248,16 @@ export type CreateHorseMutation = (
   ) }
 );
 
+export type DeleteAppointmentMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteAppointmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteAppointment'>
+);
+
 export type DeleteHorseMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -292,6 +305,7 @@ export type RegisterMutation = (
 export type UpdateAppointmentMutationVariables = Exact<{
   id: Scalars['Float'];
   booked: Scalars['Boolean'];
+  bookedBy: Scalars['String'];
 }>;
 
 
@@ -409,6 +423,7 @@ export const RegularAppointmentFragmentDoc = gql`
   to
   date
   booked
+  bookedBy
   type
 }
     `;
@@ -516,6 +531,37 @@ export function useCreateHorseMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateHorseMutationHookResult = ReturnType<typeof useCreateHorseMutation>;
 export type CreateHorseMutationResult = Apollo.MutationResult<CreateHorseMutation>;
 export type CreateHorseMutationOptions = Apollo.BaseMutationOptions<CreateHorseMutation, CreateHorseMutationVariables>;
+export const DeleteAppointmentDocument = gql`
+    mutation DeleteAppointment($id: Float!) {
+  deleteAppointment(id: $id)
+}
+    `;
+export type DeleteAppointmentMutationFn = Apollo.MutationFunction<DeleteAppointmentMutation, DeleteAppointmentMutationVariables>;
+
+/**
+ * __useDeleteAppointmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteAppointmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAppointmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAppointmentMutation, { data, loading, error }] = useDeleteAppointmentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAppointmentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAppointmentMutation, DeleteAppointmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAppointmentMutation, DeleteAppointmentMutationVariables>(DeleteAppointmentDocument, options);
+      }
+export type DeleteAppointmentMutationHookResult = ReturnType<typeof useDeleteAppointmentMutation>;
+export type DeleteAppointmentMutationResult = Apollo.MutationResult<DeleteAppointmentMutation>;
+export type DeleteAppointmentMutationOptions = Apollo.BaseMutationOptions<DeleteAppointmentMutation, DeleteAppointmentMutationVariables>;
 export const DeleteHorseDocument = gql`
     mutation DeleteHorse($id: Float!) {
   deleteHorse(id: $id)
@@ -644,8 +690,8 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateAppointmentDocument = gql`
-    mutation UpdateAppointment($id: Float!, $booked: Boolean!) {
-  updateAppointment(id: $id, booked: $booked) {
+    mutation UpdateAppointment($id: Float!, $booked: Boolean!, $bookedBy: String!) {
+  updateAppointment(id: $id, booked: $booked, bookedBy: $bookedBy) {
     ...RegularAppointment
   }
 }
@@ -667,6 +713,7 @@ export type UpdateAppointmentMutationFn = Apollo.MutationFunction<UpdateAppointm
  *   variables: {
  *      id: // value for 'id'
  *      booked: // value for 'booked'
+ *      bookedBy: // value for 'bookedBy'
  *   },
  * });
  */

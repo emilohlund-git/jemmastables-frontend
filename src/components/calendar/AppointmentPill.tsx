@@ -1,8 +1,12 @@
-import React from "react";
+import { Tooltip } from "antd";
+import React, { useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 import {
   Appointment,
-  useUpdateAppointmentMutation,
+  useDeleteAppointmentMutation,
 } from "../../generated/graphql";
+import BookAppointmentModal from "./BookAppointmentModal";
+import moment from "moment";
 
 interface Props {
   appointment: Appointment;
@@ -10,32 +14,47 @@ interface Props {
 }
 
 const AppointmentPill = (props: Props) => {
-  const [book] = useUpdateAppointmentMutation({
-    variables: {
-      id: props.appointment.id,
-      booked: true,
-    },
-  });
+  const [remove] = useDeleteAppointmentMutation();
+  const [visible, setVisible] = useState(false);
+
   return (
-    <div
-      onClick={async () => {
-        const response = await book();
-        console.log(response);
-      }}
-      className={`transition-all hidden sm:flex w-22 rounded-lg ${
-        props.appointment.type === "ridlektion"
-          ? "bg-red-300 pointer-events-none"
-          : ""
-      } ${
-        props.appointment.type === "öppen" ? "bg-green-300" : ""
-      } text-sm shadow ${
-        props.appointment.booked
-          ? "bg-gray-400 bg-opacity-30 pointer-events-none"
-          : "bg-gray-50 cursor-pointer hover:bg-gray-100"
-      }  my-1 py-1 px-2`}
+    <Tooltip
+      title={
+        <FaTrashAlt
+          onClick={async () => {
+            await remove({
+              variables: { id: props.appointment.id },
+              update: (cache) => {
+                cache.evict({ fieldName: "appointments" });
+              },
+            });
+          }}
+          className="text-white text-lg cursor-pointer"
+        />
+      }
     >
-      {props.appointment.from}-{props.appointment.to}
-    </div>
+      <div
+        className={`transition-all hidden sm:flex w-22 rounded-lg ${
+          props.appointment.type === "ridlektion" ? "bg-red-300" : ""
+        } ${
+          props.appointment.type === "öppen" ? "bg-green-300" : ""
+        } text-sm shadow ${
+          props.appointment.booked
+            ? "bg-gray-400 bg-opacity-30"
+            : "bg-gray-50 cursor-pointer hover:bg-opacity-70"
+        }  my-1 py-1 px-2`}
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        {moment(props.appointment.from).format("HH:mm")}-{moment(props.appointment.to).format("HH:mm")}
+      </div>
+      <BookAppointmentModal
+        visible={visible}
+        setVisible={setVisible}
+        appointment={props.appointment}
+      />
+    </Tooltip>
   );
 };
 

@@ -1,5 +1,5 @@
-mutation UpdateAppointment($id: Float!, $booked: Boolean!) {
-  updateAppointment(id: $id, booked: $booked) {
+mutation UpdateAppointment($id: Float!, $booked: Boolean!, $bookedBy: String!) {
+  updateAppointment(id: $id, booked: $booked, bookedBy: $bookedBy) {
     ...RegularAppointment
   }
 }

@@ -4,5 +4,6 @@ fragment RegularAppointment on Appointment {
   to
   date
   booked
+  bookedBy
   type
 }

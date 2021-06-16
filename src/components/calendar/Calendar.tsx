@@ -2,15 +2,14 @@ import moment from "moment";
 import React, { Key, useEffect, useState } from "react";
 import {
   AppointmentsQuery,
-  useAppointmentsQuery
+  useAppointmentsQuery,
 } from "../../generated/graphql";
 import DayBox from "./DayBox";
 import { getDaysInMonth } from "../../utils/calendar/getDaysInMonth";
+import FloatingButtonCalendar from "../FloatingButtonCalendar";
 moment.locale("sv");
 
 const Calendar: React.FC<{}> = () => {
-  // const [create] = useCreateAppointmentMutation();
-
   const { data, loading } = useAppointmentsQuery();
 
   const [currentMonth, setCurrentMonth] = useState(moment(new Date()));
@@ -122,6 +121,7 @@ const Calendar: React.FC<{}> = () => {
           <DayBox key={i} day={day} appointments={data as AppointmentsQuery} />
         ))}
       </div>
+      <FloatingButtonCalendar />
     </div>
   );
 };
