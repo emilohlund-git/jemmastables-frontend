@@ -9,10 +9,6 @@ module.exports = (phase, { defaultConfig }) => {
         "firebasestorage.googleapis.com"
       ],
     },
-    i18n: {
-      locales: ["sv"],
-      defaultLocale: "sv",
-    },
     async rewrites() {
       return [
         {

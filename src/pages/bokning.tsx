@@ -13,4 +13,4 @@ const bokning = () => {
   );
 };
 
-export default withApollo({ ssr: false })(bokning);
+export default withApollo({ ssr: true })(bokning);
