@@ -1,17 +1,8 @@
 import moment from "moment";
 import React, { Key } from "react";
-import { Appointment, AppointmentsQuery } from "../../generated/graphql";
 import AppointmentPill from "./AppointmentPill";
 
-interface Props {
-  day: Date;
-  appointments: AppointmentsQuery;
-  today: string;
-  mobileVisibleDay: any;
-  setMobileVisibleDay: React.Dispatch<React.SetStateAction<any>>;
-}
-
-const DayBox = (props: Props) => {
+const DayBox = (props: any) => {
   return (
     <div
       style={{ width: "14.28%" }}
@@ -39,7 +30,7 @@ const DayBox = (props: Props) => {
             ? "Idag"
             : moment(props.day).format("LL").split(" ")[0]}
           <div className="absolute flex sm:hidden -bottom-1">
-            {props.appointments.appointments.map((appointment, idx) => {
+            {props.appointments?.appointments.map((appointment: any, idx: any) => {
               if (
                 moment(appointment.date).format("LL") ==
                   moment(props.day).format("LL") &&
