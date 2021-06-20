@@ -20,22 +20,49 @@ const AddHorseImages = (props: Props) => {
       <Upload
         accept="image/*"
         multiple={true}
-        onChange={async (info) => {
-          if (info.file.status === "uploading") {
+        onChange={async ({ file, fileList }) => {
+          if (file.status !== "uploading") {
+            const promise = new Promise<string[]>((resolve) => {
+              const files = [] as string[];
+              fileList.forEach(async (file) => {
+                const f = await putStorageItem(
+                  file.originFileObj,
+                  props.horseName,
+                  {
+                    contentType: file.type,
+                  }
+                );
+                files.push(f);
+              });
+              resolve(files);
+            });
+            const response = await promise;
+            props.setDownloadURLs(response);
+          } else {
             return;
           }
-          if (info.file.status === "done") {
+
+          /*
+          if (file.status === "uploading") {
+            return;
+          }
+          if (file.status === "done") {
             const imageFile = info.file;
-            const response = await putStorageItem(
-              imageFile.originFileObj,
-              props.horseName,
-              {
-                contentType: imageFile.type,
-              }
-            );
+
+            const promise = new Promise<string>((resolve) => {
+              resolve(
+                putStorageItem(imageFile.originFileObj, props.horseName, {
+                  contentType: imageFile.type,
+                })
+              );
+            });
+
+            const response = await promise;
+      
             message.success(imageFile.name + " uppladdad!");
             props.setDownloadURLs([...props.downloadURLs, response]);
           }
+          */
         }}
       >
         <Button

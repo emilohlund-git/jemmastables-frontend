@@ -11,7 +11,7 @@ const HorseCategory = (props: Props) => {
     <div
       onMouseEnter={() => setHover(false)}
       onMouseLeave={() => setHover(true)}
-      className="flex flex-row relative px-1 py-2 md:py-0"
+      className="flex flex-row relative px-1 py-2 md:py-0 mt-3"
     >
       <div
         className="w-1/3"

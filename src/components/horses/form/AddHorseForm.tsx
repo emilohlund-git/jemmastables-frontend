@@ -1,15 +1,13 @@
 import { Button, Form, Input, InputNumber, message, Select } from "antd";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { HorseInput, useCreateHorseMutation } from "../../../generated/graphql";
-import AddHorseImages from "./AddHorseImages";
 import UploadProfileImage from "../UploadProfileImage";
+import AddHorseImages from "./AddHorseImages";
 
 const AddHorseForm = ({ setShowModal }: any) => {
-  const router = useRouter();
   const [create] = useCreateHorseMutation();
   const [horseName, setHorseName] = useState("");
-  const [downloadURLs, setDownloadURLs] = useState([""]);
+  const [downloadURLs, setDownloadURLs] = useState([] as string[]);
   const [profileImage, setProfileImage] = useState("");
 
   return (

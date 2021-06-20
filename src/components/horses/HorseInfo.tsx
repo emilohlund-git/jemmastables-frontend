@@ -1,6 +1,5 @@
 import { Button } from "antd";
 import React, { Key, useState } from "react";
-import "react-slideshow-image/dist/styles.css";
 import { SRLWrapper } from "simple-react-lightbox";
 import { options } from "../../config/LightBoxConfig";
 import { useUpdateHorseMutation } from "../../generated/graphql";

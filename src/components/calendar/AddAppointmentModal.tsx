@@ -13,8 +13,6 @@ interface Props {
 const AddAppointmentModal = (props: Props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [createAppointment] = useCreateAppointmentMutation();
-  const [disabled, setDisabled] = useState(false);
-
   const handleOk = async (values: Store) => {
     setConfirmLoading(true);
     const { errors } = await createAppointment({
@@ -25,7 +23,7 @@ const AddAppointmentModal = (props: Props) => {
           date: values.date,
           type: values.type,
           booked: false,
-          bookedBy: ''
+          bookedBy: "",
         },
       },
       update: (cache) => {
@@ -71,39 +69,19 @@ const AddAppointmentModal = (props: Props) => {
             rules={[{ required: true, message: "Ange typ av tid" }]}
           >
             <Radio.Group buttonStyle="solid">
-              <Radio.Button
-                value="ridlektion"
-                onChange={() => {
-                  setDisabled(true);
-                }}
-              >
-                Ridlektion
-              </Radio.Button>
-              <Radio.Button
-                value="självhushållning"
-                onChange={() => {
-                  setDisabled(false);
-                }}
-              >
+              <Radio.Button value="ridlektion">Ridlektion</Radio.Button>
+              <Radio.Button value="självhushållning">
                 Självhushållning
               </Radio.Button>
-              <Radio.Button
-                value="öppen"
-                onChange={() => {
-                  setDisabled(false);
-                }}
-              >
-                Öppen bana
-              </Radio.Button>
+              <Radio.Button value="öppen">Öppen bana</Radio.Button>
             </Radio.Group>
           </Form.Item>
           <Form.Item
             label="Välj tider"
             name="times"
-            rules={[{ required: !disabled, message: "Ange ett tidsintervall" }]}
+            rules={[{ required: true, message: "Ange ett tidsintervall" }]}
           >
             <TimePicker.RangePicker
-              disabled={disabled}
               className="w-full"
               placeholder={["Välj starttid", "Välj sluttid"]}
               format="HH:mm"

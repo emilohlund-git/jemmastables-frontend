@@ -1,29 +1,18 @@
-import { message, Upload } from "antd";
-import { useRouter } from "next/router";
+import { CalendarOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { Action, Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
-import {
-  useDeleteAppointmentMutation,
-  useUpdateHorseMutation,
-} from "../generated/graphql";
-import { putStorageItem } from "../utils/firebase/putStorageItem";
 import AddAppointmentModal from "./calendar/AddAppointmentModal";
+import AllBookedTimesModal from "./calendar/AllBookedTimesModal";
 
-interface Props {}
-
-const FloatingButtonCalendar = (props: Props) => {
-  const router = useRouter();
-  const { name } = router.query;
-
-  const [remove] = useDeleteAppointmentMutation();
+const FloatingButtonCalendar = () => {
   const [visible, setVisible] = useState(false);
+  const [visibleAllBookedTimes, setVisibleAllBookedTimes] = useState(false);
 
   return (
     <Fab
       alwaysShowTitle={true}
-      icon={<FaPlus />}
+      icon={<PlusOutlined />}
       mainButtonStyles={{
         color: "black",
         background: "white",
@@ -32,15 +21,31 @@ const FloatingButtonCalendar = (props: Props) => {
       style={{ bottom: 24, right: 24, zIndex: 1000 }}
     >
       <Action
-        style={{ background: "#228B22", outline: "none", paddingTop: "3px" }}
+        style={{ background: "#228B22", outline: "none" }}
         text={`Lägg till tid`}
         onClick={() => {
           setVisible(true);
         }}
       >
-        <FaPlusCircle className="text-white text-lg" />
+        <PlusOutlined className="text-white" />
       </Action>
-      <AddAppointmentModal visible={visible} setVisible={setVisible} />
+      <Action
+        style={{ background: "#228B22", outline: "none" }}
+        text={`Alla bokade tider`}
+        onClick={() => {
+          setVisibleAllBookedTimes(true);
+        }}
+      >
+        <CalendarOutlined className="text-white" />
+      </Action>
+      <AddAppointmentModal
+        visible={visible}
+        setVisible={setVisible}
+      />
+      <AllBookedTimesModal
+        visible={visibleAllBookedTimes}
+        setVisible={setVisibleAllBookedTimes}
+      />
     </Fab>
   );
 };

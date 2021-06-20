@@ -104,4 +104,4 @@ const index = () => {
   );
 };
 
-export default withApollo({ ssr: true })(index);
+export default withApollo({ ssr: false })(index);

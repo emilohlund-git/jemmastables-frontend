@@ -1,6 +1,5 @@
+import { Carousel } from "antd";
 import React from "react";
-import { Slide } from "react-slideshow-image";
-import "react-slideshow-image/dist/styles.css";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import Layout from "../../../components/Layout";
 import { withApollo } from "../../../utils/withApollo";
@@ -11,14 +10,6 @@ const images = [
   "/images/byggnader/stallet/stallet_box.png",
 ];
 
-const properties = {
-  duration: 5000,
-  transitionDuration: 500,
-  infinite: true,
-  prevArrow: <></>,
-  nextArrow: <></>,
-};
-
 const index = () => {
   return (
     <Layout>
@@ -27,10 +18,10 @@ const index = () => {
           <h1 className="text-4xl uppercase text-white">Stallet</h1>
           <hr className="bg-white my-5 w-full" />
         </div>
-        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60">
+        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 flex justify-center">
           <Breadcrumbs />
         </div>
-        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap">
+        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap mt-3">
           <p className="mt-5">
             I stallet finns det 9st rymliga boxar gjutna i skalblock med
             boxinredning från Myrby. I samtliga boxar finns det vattenkoppar och
@@ -49,17 +40,20 @@ const index = () => {
           </p>
         </div>
         <div className="w-full mx-auto">
-          <Slide easing="ease" {...properties}>
+          <Carousel
+            autoplay
+          >
             {images.map((each, index) => (
-              <div
-                className="py-56 bg-no-repeat bg-cover bg-center"
-                key={index}
-                style={{ backgroundImage: `url(${each})` }}
-              >
-                <span>Slide 1</span>
+              <div>
+                <div
+                  className="py-56 bg-no-repeat bg-cover bg-center"
+                  key={index}
+                  style={{ backgroundImage: `url(${each})` }}
+                >
+                </div>
               </div>
             ))}
-          </Slide>
+          </Carousel>
         </div>
       </div>
     </Layout>
@@ -67,4 +61,3 @@ const index = () => {
 };
 
 export default withApollo({ ssr: false })(index);
-

@@ -8,7 +8,7 @@ const Horse = ({ h }: any) => {
     <div
       onMouseEnter={() => setHover(false)}
       onMouseLeave={() => setHover(true)}
-      className="flex flex-row relative px-1 cursor-pointer justify-center mb-2"
+      className="flex flex-row relative px-1 cursor-pointer justify-center mb-2 mt-3"
       key={h.id}
     >
       <Link

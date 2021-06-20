@@ -55,6 +55,7 @@ const BookAppointmentModal = (props: Props) => {
 
   return (
     <Modal
+      className="z-40"
       title="Boka tid"
       visible={props.visible}
       onOk={handleOk}
@@ -62,28 +63,19 @@ const BookAppointmentModal = (props: Props) => {
       onCancel={handleCancel}
       footer={null}
     >
-      <Form onFinish={handleOk} layout="vertical" initialValues={{
-        date: moment(props.appointment.date),
-        times: [
-          moment(props.appointment.from),
-          moment(props.appointment.to),
-        ]
-      }}>
+      <Form
+        onFinish={handleOk}
+        layout="vertical"
+        initialValues={{
+          date: moment(props.appointment.date),
+          times: [moment(props.appointment.from), moment(props.appointment.to)],
+        }}
+      >
         <div className="flex flex-col">
-          <Form.Item
-            label="Datum"
-            name="date"
-          >
-            <DatePicker
-              disabled={true}
-              className="w-full"
-              locale={locale}
-            />
+          <Form.Item label="Datum" name="date">
+            <DatePicker disabled={true} className="w-full" locale={locale} />
           </Form.Item>
-          <Form.Item
-            label="Tider"
-            name="times"  
-          >
+          <Form.Item label="Tider" name="times">
             <TimePicker.RangePicker
               disabled={true}
               className="w-full"
@@ -106,7 +98,7 @@ const BookAppointmentModal = (props: Props) => {
             name="email"
             rules={[{ required: !disabled, message: "Ange din e-postadress" }]}
           >
-            <Input placeholder="Namn" type="email"/>
+            <Input placeholder="Namn" type="email" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" loading={confirmLoading} htmlType="submit">

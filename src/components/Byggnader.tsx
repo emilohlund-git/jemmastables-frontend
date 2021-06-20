@@ -2,7 +2,7 @@ import React from "react";
 import Byggnad from "./Byggnad";
 import byggnader from "../config/byggnader";
 
-const Byggnader = (props) => {
+const Byggnader = () => {
   return (
     <>
       {byggnader.map((byggnad, idx) => {

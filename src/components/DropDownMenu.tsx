@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { useDetectOutsideClick } from "../utils/useDetectOutsideClick";
 
 const DropDownMenu = ({ props }: any) => {
-  const router = useRouter();
   const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false);
 

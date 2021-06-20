@@ -1,12 +1,13 @@
-import { Tooltip } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Popover } from "antd";
+import moment from "moment";
 import React, { useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
 import {
   Appointment,
   useDeleteAppointmentMutation,
+  useUserQuery,
 } from "../../generated/graphql";
 import BookAppointmentModal from "./BookAppointmentModal";
-import moment from "moment";
 
 interface Props {
   appointment: Appointment;
@@ -16,24 +17,42 @@ interface Props {
 const AppointmentPill = (props: Props) => {
   const [remove] = useDeleteAppointmentMutation();
   const [visible, setVisible] = useState(false);
+  const [hover, setHover] = useState(false);
+  const { data, loading } = useUserQuery();
 
   return (
-    <Tooltip
-      title={
-        <FaTrashAlt
-          onClick={async () => {
-            await remove({
-              variables: { id: props.appointment.id },
-              update: (cache) => {
-                cache.evict({ fieldName: "appointments" });
-              },
-            });
-          }}
-          className="text-white text-lg cursor-pointer"
-        />
+    <Popover
+      placement="topLeft"
+      content={
+        data?.user ? (
+          <DeleteOutlined
+            onClick={async () => {
+              await remove({
+                variables: { id: props.appointment.id },
+                update: (cache) => {
+                  cache.evict({ fieldName: "appointments" });
+                },
+              });
+            }}
+            className="text-black text-lg cursor-pointer"
+          />
+        ) : (
+          <p>
+            {props.appointment.bookedBy !== ""
+              ? "Tiden är bokad. " + props.appointment.type
+              : "Tiden är ledig!"}
+          </p>
+        )
       }
+      overlayClassName="z-10"
     >
       <div
+        onMouseEnter={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
+        }}
         className={`transition-all hidden sm:flex w-22 rounded-lg ${
           props.appointment.type === "ridlektion" ? "bg-red-300" : ""
         } ${
@@ -42,19 +61,22 @@ const AppointmentPill = (props: Props) => {
           props.appointment.booked
             ? "bg-gray-400 bg-opacity-30"
             : "bg-gray-50 cursor-pointer hover:bg-opacity-70"
-        }  my-1 py-1 px-2`}
+        }  my-1 py-1 px-2 ${hover ? "bg-gray-200" : ""}`}
         onClick={() => {
-          setVisible(true);
+          if (props.appointment.bookedBy == "") {
+            setVisible(true);
+          }
         }}
       >
-        {moment(props.appointment.from).format("HH:mm")}-{moment(props.appointment.to).format("HH:mm")}
+        {moment(props.appointment.from).format("HH:mm")}-
+        {moment(props.appointment.to).format("HH:mm")}
       </div>
       <BookAppointmentModal
         visible={visible}
         setVisible={setVisible}
         appointment={props.appointment}
       />
-    </Tooltip>
+    </Popover>
   );
 };
 

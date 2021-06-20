@@ -12,10 +12,10 @@ const index = () => {
           <h1 className="text-4xl uppercase text-white">Anläggningen</h1>
           <hr className="bg-white my-5 w-full" />
         </div>
-        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60">
+        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 flex justify-center">
           <Breadcrumbs />
         </div>
-        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap justify-center">
+        <div className="mx-10 sm:mx-20 md:mx-40 lg:mx-60 mb-20 flex flex-col flex-grow md:flex-row flex-wrap justify-center mt-3">
           <Byggnader />
         </div>
       </div>

@@ -1,5 +1,5 @@
+import { PlusOutlined } from '@ant-design/icons';
 import React from "react";
-import { FaEdit, FaPlus } from "react-icons/fa";
 import { Action, Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -7,7 +7,7 @@ const FloatingButtonCategory = ({ showModal, setShowModal }: any) => {
   return (
     <Fab
       alwaysShowTitle={true}
-      icon={<FaPlus />}
+      icon={<PlusOutlined />}
       mainButtonStyles={{
         color: "black",
         background: "white",
@@ -23,7 +23,7 @@ const FloatingButtonCategory = ({ showModal, setShowModal }: any) => {
             setShowModal(true);
           }}
         >
-          <FaEdit className="text-white" />
+          <PlusOutlined className="text-white" />
         </Action>
       ) : (
         <Action
@@ -33,7 +33,7 @@ const FloatingButtonCategory = ({ showModal, setShowModal }: any) => {
             setShowModal(false);
           }}
         >
-          <FaEdit className="text-white" />
+          <PlusOutlined className="text-white" />
         </Action>
       )}
     </Fab>
