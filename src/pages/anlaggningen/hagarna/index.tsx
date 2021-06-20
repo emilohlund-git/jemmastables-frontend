@@ -1,18 +1,10 @@
+import { Carousel } from "antd";
 import React from "react";
-import { Slide } from "react-slideshow-image";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import Layout from "../../../components/Layout";
 import { withApollo } from "../../../utils/withApollo";
 
 const images = ["/images/byggnader/hagarna/hagarna.png"];
-
-const properties = {
-  duration: 5000,
-  transitionDuration: 500,
-  infinite: true,
-  prevArrow: <></>,
-  nextArrow: <></>,
-};
 
 const index = () => {
   return (
@@ -37,17 +29,17 @@ const index = () => {
           </p>
         </div>
         <div className="w-full mx-auto">
-          <Slide easing="ease" {...properties}>
+          <Carousel autoplay>
             {images.map((each, index) => (
-              <div
-                className="py-56 bg-no-repeat bg-cover bg-center"
-                key={index}
-                style={{ backgroundImage: `url(${each})` }}
-              >
-                <span>Slide 1</span>
+              <div>
+                <div
+                  className="py-56 bg-no-repeat bg-cover bg-center"
+                  key={index}
+                  style={{ backgroundImage: `url(${each})` }}
+                ></div>
               </div>
             ))}
-          </Slide>
+          </Carousel>
         </div>
       </div>
     </Layout>
@@ -55,4 +47,3 @@ const index = () => {
 };
 
 export default withApollo({ ssr: false })(index);
-
