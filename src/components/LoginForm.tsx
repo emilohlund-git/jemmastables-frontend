@@ -10,7 +10,7 @@ import { toErrorMap } from "../utils/toErrorMap";
 
 const LoginForm = () => {
   const router = useRouter();
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({} as any);
   const [login] = useLoginMutation();
   return (
     <Form
