@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
-export const VideoPlayer = (props) => {
-  const videoRef = useRef(null);
+interface Props {
+  source: string,
+}
+
+export const VideoPlayer = (props: Props) => {
+  const videoRef = useRef(null) as any;
 
   useEffect(() => {
     if (videoRef.current) {
